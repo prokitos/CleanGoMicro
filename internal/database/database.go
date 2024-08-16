@@ -1,7 +1,29 @@
 package database
 
-// нужен ещё интерфейс чтобы хранить разные базы данных
+import (
+	"go.mongodb.org/mongo-driver/mongo"
+	"gorm.io/gorm"
+)
 
-// открытие базы данных, миграция и тд
-type Database struct {
+type GormDatabase interface {
+	OpenConnection()
+	StartMigration()
+	GlobalSet()
+}
+
+var GlobalUser UserDatabase
+var GlobalComputer ComputerDatabase
+
+type UserDatabase struct {
+	Instance *gorm.DB
+}
+
+type ComputerDatabase struct {
+	Instance *mongo.Client
+}
+
+func checkError(err error) {
+	if err != nil {
+		panic(err)
+	}
 }
