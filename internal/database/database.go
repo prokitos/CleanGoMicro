@@ -5,21 +5,14 @@ import (
 	"gorm.io/gorm"
 )
 
-type GormDatabase interface {
-	OpenConnection()
-	StartMigration()
-	GlobalSet()
-}
-
-var GlobalUser UserDatabase
 var GlobalComputer ComputerDatabase
-
-type UserDatabase struct {
-	Instance *gorm.DB
-}
+var GlobalUser UserDatabase
 
 type ComputerDatabase struct {
 	Instance *mongo.Client
+}
+type UserDatabase struct {
+	Instance *gorm.DB
 }
 
 func checkError(err error) {

@@ -8,7 +8,13 @@ import (
 
 func getUser(c *fiber.Ctx) error {
 	var newResponse models.ResponseUser
-	newResponse.GoodShow([]models.User{{Login: "vasya", Password: "123456"}, {Login: "zhora", Password: "2238"}})
+
+	var builder models.TableBuilder
+	var temp []models.Table
+	temp = append(temp, builder.UserCreate("vanya", "123456").Instance)
+	temp = append(temp, builder.UserCreate("seg", "wey").Instance)
+
+	newResponse.GoodShow(temp)
 	return newResponse.GetError(c)
 }
 

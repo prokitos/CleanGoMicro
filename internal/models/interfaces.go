@@ -1,14 +1,28 @@
 package models
 
+import "github.com/gofiber/fiber/v2"
+
 type Response interface {
-	GetResponse() Response
-	GetError() error
-	GoodCreate()
-	BadCreate()
-	GoodShow([]Table)
-	BadShow()
+	GetError(c *fiber.Ctx) error
+	GoodCreate() Response
+	BadCreate() Response
+	GoodShow([]Table) Response
+	BadShow() Response
+	Validate() bool
 }
 
 type Table interface {
-	CreateInstance(interface{})
+	RecordCreate()
+	RecordDelete()
+	RecordShow()
+	RecordUpdate()
+}
+type GormDatabase interface {
+	OpenConnection()
+	StartMigration()
+	GlobalSet()
+	CreateData()
+	DeleteData()
+	UpdateData()
+	ShowData()
 }
