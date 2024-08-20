@@ -1,6 +1,10 @@
 package models
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"modules/internal/config"
+
+	"github.com/gofiber/fiber/v2"
+)
 
 type Response interface {
 	GetError(c *fiber.Ctx) error
@@ -12,17 +16,17 @@ type Response interface {
 }
 
 type Table interface {
-	RecordCreate()
-	RecordDelete()
-	RecordShow()
-	RecordUpdate()
+	RecordCreate(GormDatabase) Response
+	RecordDelete(GormDatabase) Response
+	RecordShow(GormDatabase) Response
+	RecordUpdate(GormDatabase) Response
 }
 type GormDatabase interface {
-	OpenConnection()
+	OpenConnection(config.MainConfig)
 	StartMigration()
 	GlobalSet()
-	CreateData()
-	DeleteData()
-	UpdateData()
-	ShowData()
+	CreateData(Table) Response
+	DeleteData(Table) Response
+	UpdateData(Table) Response
+	ShowData(Table) ([]Table, Response)
 }

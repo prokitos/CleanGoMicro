@@ -15,8 +15,8 @@ func (currentlDB *UserDatabase) StartMigration() {
 	log.Debug("migration complete")
 }
 
-func (currentlDB *UserDatabase) OpenConnection(config config.PostgresConfig) {
-	connectStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", config.User, config.Pass, config.Host, config.Port, config.Name)
+func (currentlDB *UserDatabase) OpenConnection(config config.MainConfig) {
+	connectStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", config.PostgresDB.User, config.PostgresDB.Pass, config.PostgresDB.Host, config.PostgresDB.Port, config.PostgresDB.Name)
 
 	db, err := gorm.Open(postgres.Open(connectStr), &gorm.Config{})
 	if err != nil {
@@ -30,18 +30,18 @@ func (currentlDB *UserDatabase) GlobalSet() {
 	GlobalUser = *currentlDB
 }
 
-func (currentlDB *UserDatabase) CreateData() models.Response {
+func (currentlDB *UserDatabase) CreateData(user models.User) models.Response {
 	return models.ResponseUser{}.BadCreate()
 }
 
-func (currentlDB *UserDatabase) UpdateData() models.Response {
+func (currentlDB *UserDatabase) UpdateData(user models.User) models.Response {
 	return models.ResponseUser{}.BadCreate()
 }
 
-func (currentlDB *UserDatabase) DeleteData() models.Response {
+func (currentlDB *UserDatabase) DeleteData(user models.User) models.Response {
 	return models.ResponseUser{}.BadCreate()
 }
 
-func (currentlDB *UserDatabase) ShowData() ([]models.Table, models.Response) {
+func (currentlDB *UserDatabase) ShowData(user models.User) ([]models.Table, models.Response) {
 	return nil, models.ResponseUser{}.BadShow()
 }

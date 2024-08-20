@@ -2,18 +2,33 @@ package transport
 
 import (
 	"modules/internal/models"
+	"modules/internal/services"
 
 	"github.com/gofiber/fiber/v2"
 )
 
 func getComputer(c *fiber.Ctx) error {
-	var newResponse models.ResponseComputer
-	newResponse.BadShow()
-	return newResponse.GetError(c)
+	var curComputer models.Computer
+	curComputer.GetQueryParams(c)
+	curComputer.GetQueryId(c)
+	return services.ComputerShow(curComputer).GetError(c)
 }
 
 func insertComputer(c *fiber.Ctx) error {
-	var newResponse models.ResponseComputer
-	newResponse.GoodCreate()
-	return newResponse.GetError(c)
+	var curComputer models.Computer
+	curComputer.GetQueryParams(c)
+	return services.ComputerInsert(curComputer).GetError(c)
+}
+
+func deleteComputer(c *fiber.Ctx) error {
+	var curComputer models.Computer
+	curComputer.GetQueryId(c)
+	return services.ComputerDelete(curComputer).GetError(c)
+}
+
+func updateComputer(c *fiber.Ctx) error {
+	var curComputer models.Computer
+	curComputer.GetQueryParams(c)
+	curComputer.GetQueryId(c)
+	return services.ComputerUpdate(curComputer).GetError(c)
 }
