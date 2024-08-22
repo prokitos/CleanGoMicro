@@ -15,7 +15,7 @@ func (currentlDB *ComputerDatabase) StartMigration() {
 	log.Debug("migration dont exist")
 }
 
-func (currentlDB *ComputerDatabase) ConnectToDB(config config.MainConfig) {
+func (currentlDB *ComputerDatabase) OpenConnection(config config.MainConfig) {
 
 	connectStr := fmt.Sprintf("mongodb://%s:%s", config.MongoDB.Host, config.MongoDB.Port)
 	client, err := mongo.NewClient(options.Client().ApplyURI(connectStr))
@@ -31,21 +31,21 @@ func (currentlDB *ComputerDatabase) ConnectToDB(config config.MainConfig) {
 }
 
 func (currentlDB *ComputerDatabase) GlobalSet() {
-	GlobalComputer = *currentlDB
+	GlobalComputer = currentlDB
 }
 
-func (currentlDB *ComputerDatabase) CreateData(computer models.Computer) models.Response {
+func (currentlDB *ComputerDatabase) CreateData(computer models.Table) models.Response {
 	return models.ResponseComputer{}.BadShow()
 }
 
-func (currentlDB *ComputerDatabase) UpdateData(computer models.Computer) models.Response {
+func (currentlDB *ComputerDatabase) UpdateData(computer models.Table) models.Response {
 	return models.ResponseComputer{}.BadShow()
 }
 
-func (currentlDB *ComputerDatabase) DeleteData(computer models.Computer) models.Response {
+func (currentlDB *ComputerDatabase) DeleteData(computer models.Table) models.Response {
 	return models.ResponseComputer{}.BadShow()
 }
 
-func (currentlDB *ComputerDatabase) ShowData(computer models.Computer) ([]models.Table, models.Response) {
-	return nil, models.ResponseComputer{}.BadShow()
+func (currentlDB *ComputerDatabase) ShowData(computer models.Table) models.Response {
+	return models.ResponseComputer{}.BadShow()
 }

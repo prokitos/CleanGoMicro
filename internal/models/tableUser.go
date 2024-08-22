@@ -16,7 +16,7 @@ func (instance *User) RecordCreate(db GormDatabase) Response {
 	return db.CreateData(instance)
 }
 func (instance *User) RecordShow(db GormDatabase) Response {
-	_, err := db.ShowData(instance)
+	err := db.ShowData(instance)
 	return err
 }
 func (instance *User) RecordDelete(db GormDatabase) Response {
@@ -24,6 +24,9 @@ func (instance *User) RecordDelete(db GormDatabase) Response {
 }
 func (instance *User) RecordUpdate(db GormDatabase) Response {
 	return db.UpdateData(instance)
+}
+func (instance *User) GetId() int {
+	return instance.User_id
 }
 
 func (instance *User) GetQueryId(c *fiber.Ctx) error {

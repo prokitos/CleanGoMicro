@@ -18,7 +18,7 @@ func (instance *Computer) RecordCreate(db GormDatabase) Response {
 	return db.CreateData(instance)
 }
 func (instance *Computer) RecordShow(db GormDatabase) Response {
-	_, err := db.ShowData(instance)
+	err := db.ShowData(instance)
 	return err
 }
 func (instance *Computer) RecordDelete(db GormDatabase) Response {
@@ -26,6 +26,9 @@ func (instance *Computer) RecordDelete(db GormDatabase) Response {
 }
 func (instance *Computer) RecordUpdate(db GormDatabase) Response {
 	return db.UpdateData(instance)
+}
+func (instance *Computer) GetId() int {
+	return instance.Computer_id
 }
 
 func (instance *Computer) GetQueryId(c *fiber.Ctx) error {

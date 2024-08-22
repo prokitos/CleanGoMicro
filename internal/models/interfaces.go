@@ -8,10 +8,6 @@ import (
 
 type Response interface {
 	GetError(c *fiber.Ctx) error
-	GoodCreate() Response
-	BadCreate() Response
-	GoodShow([]Table) Response
-	BadShow() Response
 	Validate() bool
 }
 
@@ -20,6 +16,7 @@ type Table interface {
 	RecordDelete(GormDatabase) Response
 	RecordShow(GormDatabase) Response
 	RecordUpdate(GormDatabase) Response
+	GetId() int
 }
 type GormDatabase interface {
 	OpenConnection(config.MainConfig)
@@ -28,5 +25,5 @@ type GormDatabase interface {
 	CreateData(Table) Response
 	DeleteData(Table) Response
 	UpdateData(Table) Response
-	ShowData(Table) ([]Table, Response)
+	ShowData(Table) Response
 }

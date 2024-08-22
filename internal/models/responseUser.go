@@ -3,9 +3,9 @@ package models
 import "github.com/gofiber/fiber/v2"
 
 type ResponseUser struct {
-	Description string  `json:"description"        example:"description"`
-	Code        int     `json:"code"               example:"status"`
-	Users       []Table `json:"users,omitempty"    example:"...."`
+	Description string `json:"description"        example:"description"`
+	Code        int    `json:"code"               example:"status"`
+	Users       []User `json:"users,omitempty"    example:"...."`
 }
 
 func (instance ResponseUser) GoodCreate() Response {
@@ -20,7 +20,31 @@ func (instance ResponseUser) BadCreate() Response {
 	instance.Users = nil
 	return instance.GetResponse()
 }
-func (instance ResponseUser) GoodShow(curUser []Table) Response {
+func (instance ResponseUser) GoodUpdate() Response {
+	instance.Code = 200
+	instance.Description = "user update success"
+	instance.Users = nil
+	return instance.GetResponse()
+}
+func (instance ResponseUser) BadUpdate() Response {
+	instance.Code = 400
+	instance.Description = "user update error"
+	instance.Users = nil
+	return instance.GetResponse()
+}
+func (instance ResponseUser) GoodDelete() Response {
+	instance.Code = 200
+	instance.Description = "user delete success"
+	instance.Users = nil
+	return instance.GetResponse()
+}
+func (instance ResponseUser) BadDelete() Response {
+	instance.Code = 400
+	instance.Description = "user delete error"
+	instance.Users = nil
+	return instance.GetResponse()
+}
+func (instance ResponseUser) GoodShow(curUser []User) Response {
 	instance.Code = 200
 	instance.Description = "user show success"
 	instance.Users = curUser

@@ -5,8 +5,8 @@ import (
 	"gorm.io/gorm"
 )
 
-var GlobalComputer ComputerDatabase
-var GlobalUser UserDatabase
+var GlobalComputer *ComputerDatabase
+var GlobalUser *UserDatabase
 
 type ComputerDatabase struct {
 	Instance *mongo.Client

@@ -3,6 +3,7 @@ package main
 import (
 	"modules/internal/app"
 	"modules/internal/config"
+	"modules/internal/database"
 	"os"
 	"os/signal"
 	"syscall"
@@ -17,6 +18,11 @@ func main() {
 	var cfg config.MainConfig
 	cfg.ConfigMustLoad("local")
 	log.Debug("config is loaded")
+
+	var newDB database.UserDatabase
+	newDB.OpenConnection(cfg)
+	newDB.StartMigration()
+	newDB.GlobalSet()
 
 	var application app.App
 	go application.NewServer(cfg.Server.Port)
