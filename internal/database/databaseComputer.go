@@ -34,18 +34,76 @@ func (currentlDB *ComputerDatabase) GlobalSet() {
 	GlobalComputer = currentlDB
 }
 
-func (currentlDB *ComputerDatabase) CreateData(computer models.Table) models.Response {
-	return models.ResponseComputer{}.BadShow()
+func (currentlDB *ComputerDatabase) getData(temp models.Table) (models.Computer, models.Response) {
+	devices, ok := temp.(*models.Computer)
+	if ok == false {
+		return models.Computer{}, models.ResponseUser{}.BadCreate()
+	}
+	return *devices, nil
 }
 
-func (currentlDB *ComputerDatabase) UpdateData(computer models.Table) models.Response {
-	return models.ResponseComputer{}.BadShow()
+func (currentlDB *ComputerDatabase) CreateData(data models.Table) models.Response {
+
+	computer, resp := currentlDB.getData(data)
+	if resp != nil {
+		return resp
+	}
+
+	collection := currentlDB.Instance.Database("test").Collection("testovs")
+	_, err := collection.InsertOne(context.TODO(), computer)
+	checkError(err)
+
+	return models.ResponseComputer{}.GoodCreate()
 }
 
-func (currentlDB *ComputerDatabase) DeleteData(computer models.Table) models.Response {
-	return models.ResponseComputer{}.BadShow()
+func (currentlDB *ComputerDatabase) UpdateData(data models.Table) models.Response {
+
+	computer, resp := currentlDB.getData(data)
+	if resp != nil {
+		return resp
+	}
+	var computer_id models.Computer
+	computer_id.Computer_id = computer.Computer_id
+
+	collection := currentlDB.Instance.Database("test").Collection("testovs")
+	_, err := collection.UpdateMany(context.TODO(), computer_id, computer)
+	checkError(err)
+
+	return models.ResponseComputer{}.GoodUpdate()
 }
 
-func (currentlDB *ComputerDatabase) ShowData(computer models.Table) models.Response {
-	return models.ResponseComputer{}.BadShow()
+func (currentlDB *ComputerDatabase) DeleteData(data models.Table) models.Response {
+
+	computer, resp := currentlDB.getData(data)
+	if resp != nil {
+		return resp
+	}
+
+	collection := currentlDB.Instance.Database("test").Collection("testovs")
+	_, err := collection.DeleteMany(context.TODO(), computer)
+	checkError(err)
+
+	return models.ResponseComputer{}.GoodDelete()
+}
+
+func (currentlDB *ComputerDatabase) ShowData(data models.Table) models.Response {
+
+	computer, resp := currentlDB.getData(data)
+	if resp != nil {
+		return resp
+	}
+
+	collection := currentlDB.Instance.Database("test").Collection("testovs")
+	cur, err := collection.Find(context.TODO(), computer)
+	checkError(err)
+	var finded []models.Computer
+
+	for cur.Next(context.TODO()) {
+		var elem models.Computer
+		err := cur.Decode(&elem)
+		checkError(err)
+		finded = append(finded, elem)
+	}
+
+	return models.ResponseComputer{}.GoodShow(finded)
 }

@@ -1,6 +1,7 @@
 package transport
 
 import (
+	"fmt"
 	"modules/internal/models"
 	"modules/internal/services"
 
@@ -11,6 +12,8 @@ func getComputer(c *fiber.Ctx) error {
 	var curComputer models.Computer
 	curComputer.GetQueryParams(c)
 	curComputer.GetQueryId(c)
+	fmt.Println("zdes")
+	fmt.Println(curComputer)
 	return services.ComputerShow(curComputer).GetError(c)
 }
 

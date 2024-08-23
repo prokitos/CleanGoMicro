@@ -9,5 +9,5 @@ postgres:
   name: "clean"
   reload: false
 mongo:
-  port: "8092"
+  port: "27017"
   host: "localhost"

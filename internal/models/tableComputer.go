@@ -42,7 +42,7 @@ func (instance *Computer) GetQueryId(c *fiber.Ctx) error {
 
 func (instance *Computer) GetQueryParams(c *fiber.Ctx) error {
 	price, err := strconv.Atoi(c.Query("price", ""))
-	if err != nil {
+	if err != nil && price != 0 {
 		return err
 	}
 	instance.Price = price
