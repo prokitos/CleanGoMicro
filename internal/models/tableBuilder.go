@@ -12,7 +12,8 @@ func (instance TableBuilder) UserCreate(login string, password string) TableBuil
 }
 func (instance TableBuilder) ComputerCreate(price int, ram string, cpu string, gpu string) TableBuilder {
 	var temp Table
-	temp = &Computer{Price: price, Ram: ram, Cpu: cpu, Gpu: gpu}
+	base := &ComputerBase{Price: price, Ram: ram, Cpu: cpu, Gpu: gpu}
+	temp = &Computer{ComputerBase: *base}
 	instance.Instance = temp
 	return instance
 }

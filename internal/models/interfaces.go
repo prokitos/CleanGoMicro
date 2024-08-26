@@ -16,7 +16,6 @@ type Table interface {
 	RecordDelete(GormDatabase) Response
 	RecordShow(GormDatabase) Response
 	RecordUpdate(GormDatabase) Response
-	GetId() int
 }
 type GormDatabase interface {
 	OpenConnection(config.MainConfig)
