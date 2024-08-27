@@ -2,17 +2,21 @@ package database
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"modules/internal/config"
 	"modules/internal/models"
 
 	"github.com/gofiber/fiber/v2/log"
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
+
+func (currentlDB *ComputerDatabase) Run(config config.MainConfig) {
+	currentlDB.OpenConnection(config)
+	currentlDB.StartMigration()
+	currentlDB.GlobalSet()
+}
 
 func (currentlDB *ComputerDatabase) StartMigration() {
 	log.Debug("migration dont exist")
@@ -65,20 +69,10 @@ func (currentlDB *ComputerDatabase) DeleteData(data models.Table) models.Respons
 	if resp != nil {
 		return resp
 	}
-
-	var temp models.ComputerOutput
-	temp.ComputerBase = computer.ComputerBase
-	if computer.Computer_id != "" {
-		objID, err := primitive.ObjectIDFromHex(computer.Computer_id)
-		if err != nil {
-			fmt.Println("Error converting string to ObjectId:", err)
-			return nil
-		}
-		temp.Computer_id = objID
-	}
+	temp := computer.OutputGet()
 
 	collection := currentlDB.Instance.Database("test").Collection("testovs")
-	deleteResult, _ := collection.DeleteOne(context.TODO(), bson.M{"_id": temp.Computer_id})
+	deleteResult, _ := collection.DeleteOne(context.TODO(), temp)
 	if deleteResult.DeletedCount == 0 {
 		return models.ResponseComputer{}.BadDelete()
 	}
@@ -92,11 +86,11 @@ func (currentlDB *ComputerDatabase) UpdateData(data models.Table) models.Respons
 	if resp != nil {
 		return resp
 	}
-	var computer_id models.Computer
-	computer_id.Computer_id = computer.Computer_id
+	temp := computer.OutputGet()
+	update := bson.D{{"$set", temp}}
 
 	collection := currentlDB.Instance.Database("test").Collection("testovs")
-	_, err := collection.UpdateMany(context.TODO(), computer_id, computer)
+	_, err := collection.UpdateMany(context.TODO(), bson.D{{"_id", temp.Computer_id}}, update)
 	checkError(err)
 
 	return models.ResponseComputer{}.GoodUpdate()
@@ -108,17 +102,7 @@ func (currentlDB *ComputerDatabase) ShowData(data models.Table) models.Response 
 	if resp != nil {
 		return resp
 	}
-
-	var temp models.ComputerOutput
-	temp.ComputerBase = computer.ComputerBase
-	if computer.Computer_id != "" {
-		objID, err := primitive.ObjectIDFromHex(computer.Computer_id)
-		if err != nil {
-			fmt.Println("Error converting string to ObjectId:", err)
-			return nil
-		}
-		temp.Computer_id = objID
-	}
+	temp := computer.OutputGet()
 
 	collection := currentlDB.Instance.Database("test").Collection("testovs")
 	cur, err := collection.Find(context.TODO(), temp)
@@ -133,16 +117,4 @@ func (currentlDB *ComputerDatabase) ShowData(data models.Table) models.Response 
 	}
 
 	return models.ResponseComputer{}.GoodShow(finded)
-}
-
-// чтобы пустые поля не передавались в запрос
-func jsonToInterf(temp interface{}) interface{} {
-
-	out, _ := json.MarshalIndent(temp, "", "  ")
-
-	var bdoc interface{}
-	err := bson.UnmarshalExtJSON([]byte(out), true, &bdoc)
-	checkError(err)
-
-	return bdoc
 }

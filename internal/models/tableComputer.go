@@ -7,21 +7,20 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-type ComputerBase struct {
-	Price int    `json:"price,omitempty" example:"125000"`
-	Ram   string `json:"ram,omitempty" example:"16gb"`
-	Cpu   string `json:"cpu,omitempty" example:"intel core i7"`
-	Gpu   string `json:"gpu,omitempty" example:"geforce gtx 1080"`
-}
-
 type Computer struct {
 	Computer_id string `json:"computer_id,omitempty" example:"12" bson:"_id,omitempty"`
-	ComputerBase
+	Price       int    `json:"price,omitempty" example:"125000" bson:"price,omitempty"`
+	Ram         string `json:"ram,omitempty" example:"16gb" bson:"ram,omitempty"`
+	Cpu         string `json:"cpu,omitempty" example:"intel core i7" bson:"cpu,omitempty"`
+	Gpu         string `json:"gpu,omitempty" example:"geforce gtx 1080" bson:"gpu,omitempty"`
 }
 
 type ComputerOutput struct {
 	Computer_id primitive.ObjectID `json:"computer_id" bson:"_id,omitempty"`
-	ComputerBase
+	Price       int                `json:"price,omitempty" example:"125000" bson:"price,omitempty"`
+	Ram         string             `json:"ram,omitempty" example:"16gb" bson:"ram,omitempty"`
+	Cpu         string             `json:"cpu,omitempty" example:"intel core i7" bson:"cpu,omitempty"`
+	Gpu         string             `json:"gpu,omitempty" example:"geforce gtx 1080" bson:"gpu,omitempty"`
 }
 
 func (instance *Computer) RecordCreate(db GormDatabase) Response {
@@ -64,4 +63,23 @@ func (instance *Computer) GetBodyParams(c *fiber.Ctx) error {
 		return err
 	}
 	return nil
+}
+
+func (instance *Computer) OutputGet() ComputerOutput {
+	var newComputer ComputerOutput
+	newComputer.Cpu = instance.Cpu
+	newComputer.Gpu = instance.Gpu
+	newComputer.Price = instance.Price
+	newComputer.Ram = instance.Ram
+
+	if instance.Computer_id != "" {
+		objID, err := primitive.ObjectIDFromHex(instance.Computer_id)
+		if err != nil {
+			return newComputer
+		}
+
+		newComputer.Computer_id = objID
+	}
+
+	return newComputer
 }

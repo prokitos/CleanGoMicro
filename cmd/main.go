@@ -19,16 +19,10 @@ func main() {
 	cfg.ConfigMustLoad("local")
 	log.Debug("config is loaded")
 
-	// одна функция которая и мигририует и другое и се
 	var userDB database.UserDatabase
-	userDB.OpenConnection(cfg)
-	userDB.StartMigration()
-	userDB.GlobalSet()
-
+	userDB.Run(cfg)
 	var computerDB database.ComputerDatabase
-	computerDB.OpenConnection(cfg)
-	computerDB.StartMigration()
-	computerDB.GlobalSet()
+	computerDB.Run(cfg)
 
 	var application app.App
 	go application.NewServer(cfg.Server.Port)

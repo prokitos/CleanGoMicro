@@ -10,6 +10,12 @@ import (
 	"gorm.io/gorm"
 )
 
+func (currentlDB *UserDatabase) Run(config config.MainConfig) {
+	currentlDB.OpenConnection(config)
+	currentlDB.StartMigration()
+	currentlDB.GlobalSet()
+}
+
 func (currentlDB *UserDatabase) StartMigration() {
 	currentlDB.Instance.AutoMigrate(models.User{})
 	log.Debug("migration complete")
