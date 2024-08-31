@@ -12,12 +12,12 @@ type Response interface {
 }
 
 type Table interface {
-	RecordCreate(GormDatabase) Response
-	RecordDelete(GormDatabase) Response
-	RecordShow(GormDatabase) Response
-	RecordUpdate(GormDatabase) Response
+	RecordCreate(BaseDatabase) Response
+	RecordDelete(BaseDatabase) Response
+	RecordShow(BaseDatabase) Response
+	RecordUpdate(BaseDatabase) Response
 }
-type GormDatabase interface {
+type BaseDatabase interface {
 	OpenConnection(config.MainConfig)
 	StartMigration()
 	GlobalSet()

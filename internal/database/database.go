@@ -5,13 +5,13 @@ import (
 	"gorm.io/gorm"
 )
 
-var GlobalComputer *ComputerDatabase
-var GlobalUser *UserDatabase
+var GlobalMongo *MongoDatabase
+var GlobalPostgres *PostgresDatabase
 
-type ComputerDatabase struct {
+type MongoDatabase struct {
 	Instance *mongo.Client
 }
-type UserDatabase struct {
+type PostgresDatabase struct {
 	Instance *gorm.DB
 }
 

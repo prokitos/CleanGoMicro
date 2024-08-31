@@ -19,9 +19,9 @@ func main() {
 	cfg.ConfigMustLoad("local")
 	log.Debug("config is loaded")
 
-	var userDB database.UserDatabase
+	var userDB database.PostgresDatabase
 	userDB.Run(cfg)
-	var computerDB database.ComputerDatabase
+	var computerDB database.MongoDatabase
 	computerDB.Run(cfg)
 
 	var application app.App

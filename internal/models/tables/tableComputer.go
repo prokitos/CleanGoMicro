@@ -1,6 +1,7 @@
-package models
+package tables
 
 import (
+	"modules/internal/models"
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
@@ -23,17 +24,17 @@ type ComputerOutput struct {
 	Gpu         string             `json:"gpu,omitempty" example:"geforce gtx 1080" bson:"gpu,omitempty"`
 }
 
-func (instance *Computer) RecordCreate(db GormDatabase) Response {
+func (instance *Computer) RecordCreate(db models.BaseDatabase) models.Response {
 	return db.CreateData(instance)
 }
-func (instance *Computer) RecordShow(db GormDatabase) Response {
+func (instance *Computer) RecordShow(db models.BaseDatabase) models.Response {
 	err := db.ShowData(instance)
 	return err
 }
-func (instance *Computer) RecordDelete(db GormDatabase) Response {
+func (instance *Computer) RecordDelete(db models.BaseDatabase) models.Response {
 	return db.DeleteData(instance)
 }
-func (instance *Computer) RecordUpdate(db GormDatabase) Response {
+func (instance *Computer) RecordUpdate(db models.BaseDatabase) models.Response {
 	return db.UpdateData(instance)
 }
 func (instance *Computer) GetId() string {

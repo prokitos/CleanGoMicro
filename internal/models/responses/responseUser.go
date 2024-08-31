@@ -1,56 +1,61 @@
-package models
+package responses
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"modules/internal/models"
+	"modules/internal/models/tables"
+
+	"github.com/gofiber/fiber/v2"
+)
 
 type ResponseUser struct {
-	Description string `json:"description"        example:"description"`
-	Code        int    `json:"code"               example:"status"`
-	Users       []User `json:"users,omitempty"    example:"...."`
+	Description string        `json:"description"        example:"description"`
+	Code        int           `json:"code"               example:"status"`
+	Users       []tables.User `json:"users,omitempty"    example:"...."`
 }
 
-func (instance ResponseUser) GoodCreate() Response {
+func (instance ResponseUser) GoodCreate() models.Response {
 	instance.Code = 200
 	instance.Description = "user create success"
 	instance.Users = nil
 	return instance.GetResponse()
 }
-func (instance ResponseUser) BadCreate() Response {
+func (instance ResponseUser) BadCreate() models.Response {
 	instance.Code = 400
 	instance.Description = "user create error"
 	instance.Users = nil
 	return instance.GetResponse()
 }
-func (instance ResponseUser) GoodUpdate() Response {
+func (instance ResponseUser) GoodUpdate() models.Response {
 	instance.Code = 200
 	instance.Description = "user update success"
 	instance.Users = nil
 	return instance.GetResponse()
 }
-func (instance ResponseUser) BadUpdate() Response {
+func (instance ResponseUser) BadUpdate() models.Response {
 	instance.Code = 400
 	instance.Description = "user update error"
 	instance.Users = nil
 	return instance.GetResponse()
 }
-func (instance ResponseUser) GoodDelete() Response {
+func (instance ResponseUser) GoodDelete() models.Response {
 	instance.Code = 200
 	instance.Description = "user delete success"
 	instance.Users = nil
 	return instance.GetResponse()
 }
-func (instance ResponseUser) BadDelete() Response {
+func (instance ResponseUser) BadDelete() models.Response {
 	instance.Code = 400
 	instance.Description = "user delete error"
 	instance.Users = nil
 	return instance.GetResponse()
 }
-func (instance ResponseUser) GoodShow(curUser []User) Response {
+func (instance ResponseUser) GoodShow(curUser []tables.User) models.Response {
 	instance.Code = 200
 	instance.Description = "user show success"
 	instance.Users = curUser
 	return instance.GetResponse()
 }
-func (instance ResponseUser) BadShow() Response {
+func (instance ResponseUser) BadShow() models.Response {
 	instance.Code = 400
 	instance.Description = "user show error"
 	instance.Users = nil
@@ -68,8 +73,8 @@ func (instance ResponseUser) Validate() bool {
 	return false
 }
 
-func (instance ResponseUser) GetResponse() Response {
-	var temp Response
+func (instance ResponseUser) GetResponse() models.Response {
+	var temp models.Response
 	temp = instance
 	return temp
 }

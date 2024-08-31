@@ -14,4 +14,8 @@ func SetHandlers(instance *fiber.App) {
 	instance.Post("/computer", insertComputer)
 	instance.Delete("/computer", deleteComputer)
 	instance.Put("/computer", updateComputer)
+
+	instance.Post("/car", insertCar)
+
+	instance.Post("/task", insertTask)
 }

@@ -1,56 +1,61 @@
-package models
+package responses
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"modules/internal/models"
+	"modules/internal/models/tables"
+
+	"github.com/gofiber/fiber/v2"
+)
 
 type ResponseComputer struct {
-	Description string     `json:"description"       		 example:"description"`
-	Code        int        `json:"code"               		 example:"status"`
-	Computers   []Computer `json:"computers,omitempty"       example:"...."`
+	Description string            `json:"description"       		 example:"description"`
+	Code        int               `json:"code"               		 example:"status"`
+	Computers   []tables.Computer `json:"computers,omitempty"       example:"...."`
 }
 
-func (instance ResponseComputer) GoodCreate() Response {
+func (instance ResponseComputer) GoodCreate() models.Response {
 	instance.Code = 200
 	instance.Description = "computer create success"
 	instance.Computers = nil
 	return instance.GetResponse()
 }
-func (instance ResponseComputer) BadCreate() Response {
+func (instance ResponseComputer) BadCreate() models.Response {
 	instance.Code = 400
 	instance.Description = "computer create error"
 	instance.Computers = nil
 	return instance.GetResponse()
 }
-func (instance ResponseComputer) GoodUpdate() Response {
+func (instance ResponseComputer) GoodUpdate() models.Response {
 	instance.Code = 200
 	instance.Description = "computer update success"
 	instance.Computers = nil
 	return instance.GetResponse()
 }
-func (instance ResponseComputer) BadUpdate() Response {
+func (instance ResponseComputer) BadUpdate() models.Response {
 	instance.Code = 400
 	instance.Description = "computer update error"
 	instance.Computers = nil
 	return instance.GetResponse()
 }
-func (instance ResponseComputer) GoodDelete() Response {
+func (instance ResponseComputer) GoodDelete() models.Response {
 	instance.Code = 200
 	instance.Description = "computer delete success"
 	instance.Computers = nil
 	return instance.GetResponse()
 }
-func (instance ResponseComputer) BadDelete() Response {
+func (instance ResponseComputer) BadDelete() models.Response {
 	instance.Code = 400
 	instance.Description = "computer delete error"
 	instance.Computers = nil
 	return instance.GetResponse()
 }
-func (instance ResponseComputer) GoodShow(curComputer []Computer) Response {
+func (instance ResponseComputer) GoodShow(curComputer []tables.Computer) models.Response {
 	instance.Code = 200
 	instance.Description = "computer show success"
 	instance.Computers = curComputer
 	return instance.GetResponse()
 }
-func (instance ResponseComputer) BadShow() Response {
+func (instance ResponseComputer) BadShow() models.Response {
 	instance.Code = 400
 	instance.Description = "computer show error"
 	instance.Computers = nil
@@ -67,8 +72,8 @@ func (instance ResponseComputer) Validate() bool {
 	return false
 }
 
-func (instance ResponseComputer) GetResponse() Response {
-	var temp Response
+func (instance ResponseComputer) GetResponse() models.Response {
+	var temp models.Response
 	temp = instance
 	return temp
 }

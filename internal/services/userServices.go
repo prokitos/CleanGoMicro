@@ -3,25 +3,21 @@ package services
 import (
 	"modules/internal/database"
 	"modules/internal/models"
+	"modules/internal/models/tables"
 )
 
-func UserInsert(instance models.User) models.Response {
-	return instance.RecordCreate(database.GlobalUser)
+func UserInsert(instance tables.User) models.Response {
+	return instance.RecordCreate(database.GlobalPostgres)
 }
 
-func UserShow(instance models.User) models.Response {
-	return instance.RecordShow(database.GlobalUser)
+func UserShow(instance tables.User) models.Response {
+	return instance.RecordShow(database.GlobalPostgres)
 }
 
-func UserUpdate(instance models.User) models.Response {
-	return instance.RecordUpdate(database.GlobalUser)
+func UserUpdate(instance tables.User) models.Response {
+	return instance.RecordUpdate(database.GlobalPostgres)
 }
 
-func UserDelete(instance models.User) models.Response {
-	return instance.RecordDelete(database.GlobalUser)
+func UserDelete(instance tables.User) models.Response {
+	return instance.RecordDelete(database.GlobalPostgres)
 }
-
-// var builder models.TableBuilder
-// var temp []models.Table
-// temp = append(temp, builder.UserCreate("vanya", "123456").Instance)
-// temp = append(temp, builder.UserCreate("seg", "wey").Instance)

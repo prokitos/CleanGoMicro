@@ -1,6 +1,7 @@
-package models
+package tables
 
 import (
+	"modules/internal/models"
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
@@ -12,17 +13,17 @@ type User struct {
 	Password string `json:"password" example:"123456"`
 }
 
-func (instance *User) RecordCreate(db GormDatabase) Response {
+func (instance *User) RecordCreate(db models.BaseDatabase) models.Response {
 	return db.CreateData(instance)
 }
-func (instance *User) RecordShow(db GormDatabase) Response {
+func (instance *User) RecordShow(db models.BaseDatabase) models.Response {
 	err := db.ShowData(instance)
 	return err
 }
-func (instance *User) RecordDelete(db GormDatabase) Response {
+func (instance *User) RecordDelete(db models.BaseDatabase) models.Response {
 	return db.DeleteData(instance)
 }
-func (instance *User) RecordUpdate(db GormDatabase) Response {
+func (instance *User) RecordUpdate(db models.BaseDatabase) models.Response {
 	return db.UpdateData(instance)
 }
 func (instance *User) GetId() int {
