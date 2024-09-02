@@ -24,3 +24,9 @@ func (instance ResponseGlobal) getResult() string {
 	result := "Code:" + strconv.Itoa(instance.Code) + "; Description:" + instance.Description
 	return result
 }
+func (instance ResponseGlobal) Validate() bool {
+	if instance.Code >= 200 && instance.Code <= 300 {
+		return true
+	}
+	return false
+}

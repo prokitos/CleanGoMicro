@@ -8,6 +8,8 @@ import (
 var GlobalMongo *MongoDatabase
 var GlobalPostgres *PostgresDatabase
 
+var GlobalUserDao *UserDao
+
 type MongoDatabase struct {
 	Instance *mongo.Client
 }

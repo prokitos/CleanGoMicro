@@ -78,3 +78,11 @@ func (currentlDB *MongoDatabase) ShowData(data models.Table) models.Response {
 
 	return responses.ResponseComputer{}.GoodShow(finded)
 }
+
+func (currentlDB *MongoDatabase) getData(temp models.Table) (tables.Computer, models.Response) {
+	devices, ok := temp.(*tables.Computer)
+	if ok == false {
+		return tables.Computer{}, responses.ResponseComputer{}.BadCreate()
+	}
+	return *devices, nil
+}

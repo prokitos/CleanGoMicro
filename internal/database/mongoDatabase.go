@@ -4,9 +4,6 @@ import (
 	"context"
 	"fmt"
 	"modules/internal/config"
-	"modules/internal/models"
-	"modules/internal/models/responses"
-	"modules/internal/models/tables"
 
 	"github.com/gofiber/fiber/v2/log"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -40,12 +37,4 @@ func (currentlDB *MongoDatabase) OpenConnection(config config.MainConfig) {
 
 func (currentlDB *MongoDatabase) GlobalSet() {
 	GlobalMongo = currentlDB
-}
-
-func (currentlDB *MongoDatabase) getData(temp models.Table) (tables.Computer, models.Response) {
-	devices, ok := temp.(*tables.Computer)
-	if ok == false {
-		return tables.Computer{}, responses.ResponseUser{}.BadCreate()
-	}
-	return *devices, nil
 }

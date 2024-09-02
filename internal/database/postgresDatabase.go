@@ -3,7 +3,6 @@ package database
 import (
 	"fmt"
 	"modules/internal/config"
-	"modules/internal/models"
 	"modules/internal/models/responses"
 	"modules/internal/models/tables"
 
@@ -81,12 +80,4 @@ func (currentlDB *PostgresDatabase) checkDatabaseCreated(config config.MainConfi
 
 func (currentlDB *PostgresDatabase) GlobalSet() {
 	GlobalPostgres = currentlDB
-}
-
-func (currentlDB *PostgresDatabase) getData(temp models.Table) (tables.User, models.Response) {
-	person, ok := temp.(*tables.User)
-	if ok == false {
-		return tables.User{}, responses.ResponseUser{}.BadCreate()
-	}
-	return *person, nil
 }

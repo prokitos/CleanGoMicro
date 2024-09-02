@@ -13,18 +13,18 @@ type User struct {
 	Password string `json:"password" example:"123456"`
 }
 
-func (instance *User) RecordCreate(db models.BaseDatabase) models.Response {
-	return db.CreateData(instance)
+func (instance *User) RecordCreate(db models.DatabaseCore, dao models.DatabaseDao) models.Response {
+	return dao.CreateData(instance, db)
 }
-func (instance *User) RecordShow(db models.BaseDatabase) models.Response {
-	err := db.ShowData(instance)
+func (instance *User) RecordShow(db models.DatabaseCore, dao models.DatabaseDao) models.Response {
+	err := dao.ShowData(instance, db)
 	return err
 }
-func (instance *User) RecordDelete(db models.BaseDatabase) models.Response {
-	return db.DeleteData(instance)
+func (instance *User) RecordDelete(db models.DatabaseCore, dao models.DatabaseDao) models.Response {
+	return dao.DeleteData(instance, db)
 }
-func (instance *User) RecordUpdate(db models.BaseDatabase) models.Response {
-	return db.UpdateData(instance)
+func (instance *User) RecordUpdate(db models.DatabaseCore, dao models.DatabaseDao) models.Response {
+	return dao.UpdateData(instance, db)
 }
 func (instance *User) GetId() int {
 	return instance.User_id

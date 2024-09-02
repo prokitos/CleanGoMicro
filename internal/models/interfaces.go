@@ -12,17 +12,19 @@ type Response interface {
 }
 
 type Table interface {
-	RecordCreate(BaseDatabase) Response
-	RecordDelete(BaseDatabase) Response
-	RecordShow(BaseDatabase) Response
-	RecordUpdate(BaseDatabase) Response
+	RecordCreate(DatabaseCore, DatabaseDao) Response
+	RecordDelete(DatabaseCore, DatabaseDao) Response
+	RecordShow(DatabaseCore, DatabaseDao) Response
+	RecordUpdate(DatabaseCore, DatabaseDao) Response
 }
-type BaseDatabase interface {
+type DatabaseCore interface {
 	OpenConnection(config.MainConfig)
 	StartMigration()
 	GlobalSet()
-	CreateData(Table) Response
-	DeleteData(Table) Response
-	UpdateData(Table) Response
-	ShowData(Table) Response
+}
+type DatabaseDao interface {
+	CreateData(Table, DatabaseCore) Response
+	DeleteData(Table, DatabaseCore) Response
+	UpdateData(Table, DatabaseCore) Response
+	ShowData(Table, DatabaseCore) Response
 }
