@@ -7,17 +7,17 @@ import (
 )
 
 func ComputerInsert(instance tables.Computer) models.Response {
-	return instance.RecordCreate(database.GlobalMongo)
+	return instance.RecordCreate(database.GlobalMongo, database.GlobalComputerDao)
 }
 
 func ComputerShow(instance tables.Computer) models.Response {
-	return instance.RecordShow(database.GlobalMongo)
+	return instance.RecordShow(database.GlobalMongo, database.GlobalComputerDao)
 }
 
 func ComputerUpdate(instance tables.Computer) models.Response {
-	return instance.RecordUpdate(database.GlobalMongo)
+	return instance.RecordUpdate(database.GlobalMongo, database.GlobalComputerDao)
 }
 
 func ComputerDelete(instance tables.Computer) models.Response {
-	return instance.RecordDelete(database.GlobalMongo)
+	return instance.RecordDelete(database.GlobalMongo, database.GlobalComputerDao)
 }

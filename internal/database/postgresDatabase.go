@@ -3,6 +3,7 @@ package database
 import (
 	"fmt"
 	"modules/internal/config"
+	"modules/internal/models"
 	"modules/internal/models/responses"
 	"modules/internal/models/tables"
 
@@ -80,4 +81,13 @@ func (currentlDB *PostgresDatabase) checkDatabaseCreated(config config.MainConfi
 
 func (currentlDB *PostgresDatabase) GlobalSet() {
 	GlobalPostgres = currentlDB
+}
+
+func convertToPostgres(interf models.DatabaseCore) *PostgresDatabase {
+	dbConnect, err := interf.(*PostgresDatabase)
+	if !err {
+		return nil
+	}
+
+	return dbConnect
 }

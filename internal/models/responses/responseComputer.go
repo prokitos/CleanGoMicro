@@ -61,6 +61,12 @@ func (instance ResponseComputer) BadShow() models.Response {
 	instance.Computers = nil
 	return instance.GetResponse()
 }
+func (instance ResponseComputer) InternalError() models.Response {
+	instance.Code = 400
+	instance.Description = "internal error"
+	instance.Computers = nil
+	return instance.GetResponse()
+}
 
 func (instance ResponseComputer) GetError(c *fiber.Ctx) error {
 	return c.Status(instance.Code).JSON(instance)

@@ -9,6 +9,9 @@ var GlobalMongo *MongoDatabase
 var GlobalPostgres *PostgresDatabase
 
 var GlobalUserDao *UserDao
+var GlobalTaskDao *TaskDao
+var GlobalComputerDao *ComputerDao
+var GlobalCarDao *CarDao
 
 type MongoDatabase struct {
 	Instance *mongo.Client

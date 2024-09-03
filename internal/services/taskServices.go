@@ -1,23 +1,23 @@
 package services
 
 import (
+	"modules/internal/database"
 	"modules/internal/models"
-	"modules/internal/models/responses"
 	"modules/internal/models/tables"
 )
 
 func TaskInsert(instance tables.Task) models.Response {
-	return responses.ResponseUser{}.BadCreate()
+	return instance.RecordCreate(database.GlobalPostgres, database.GlobalTaskDao)
 }
 
 func TaskShow(instance tables.Task) models.Response {
-	return responses.ResponseUser{}.BadCreate()
+	return instance.RecordShow(database.GlobalPostgres, database.GlobalTaskDao)
 }
 
 func TaskUpdate(instance tables.Task) models.Response {
-	return responses.ResponseUser{}.BadCreate()
+	return instance.RecordUpdate(database.GlobalPostgres, database.GlobalTaskDao)
 }
 
 func TaskDelete(instance tables.Task) models.Response {
-	return responses.ResponseUser{}.BadCreate()
+	return instance.RecordDelete(database.GlobalPostgres, database.GlobalTaskDao)
 }

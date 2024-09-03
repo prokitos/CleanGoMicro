@@ -24,18 +24,18 @@ type ComputerOutput struct {
 	Gpu         string             `json:"gpu,omitempty" example:"geforce gtx 1080" bson:"gpu,omitempty"`
 }
 
-func (instance *Computer) RecordCreate(db models.BaseDatabase) models.Response {
-	return db.CreateData(instance)
+func (instance *Computer) RecordCreate(db models.DatabaseCore, dao models.DatabaseDao) models.Response {
+	return dao.CreateData(instance, db)
 }
-func (instance *Computer) RecordShow(db models.BaseDatabase) models.Response {
-	err := db.ShowData(instance)
+func (instance *Computer) RecordShow(db models.DatabaseCore, dao models.DatabaseDao) models.Response {
+	err := dao.ShowData(instance, db)
 	return err
 }
-func (instance *Computer) RecordDelete(db models.BaseDatabase) models.Response {
-	return db.DeleteData(instance)
+func (instance *Computer) RecordDelete(db models.DatabaseCore, dao models.DatabaseDao) models.Response {
+	return dao.DeleteData(instance, db)
 }
-func (instance *Computer) RecordUpdate(db models.BaseDatabase) models.Response {
-	return db.UpdateData(instance)
+func (instance *Computer) RecordUpdate(db models.DatabaseCore, dao models.DatabaseDao) models.Response {
+	return dao.UpdateData(instance, db)
 }
 func (instance *Computer) GetId() string {
 	return instance.Computer_id

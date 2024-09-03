@@ -1,23 +1,72 @@
 package tables
 
-import "modules/internal/models"
+import (
+	"modules/internal/models"
+
+	"github.com/gofiber/fiber/v2"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+)
 
 type Car struct {
-	Car_id int    `json:"id" example:"12" gorm:"unique;primaryKey;autoIncrement"`
-	Mark   string `json:"mark" example:"lada"`
-	Year   string `json:"year" example:"1990"`
+	Car_id string `json:"car_id,omitempty" example:"12" bson:"_id,omitempty"`
+	Mark   string `json:"mark" example:"lada" bson:"mark,omitempty"`
+	Year   string `json:"year" example:"1990" bson:"year,omitempty"`
+}
+type CarOutput struct {
+	Car_id primitive.ObjectID `json:"car_id" bson:"_id,omitempty"`
+	Mark   string             `json:"mark" example:"lada" bson:"mark,omitempty"`
+	Year   string             `json:"year" example:"1990" bson:"year,omitempty"`
 }
 
-func (instance *Car) RecordCreate(db models.BaseDatabase) models.Response {
-	return db.CreateData(instance)
+func (instance *Car) RecordCreate(db models.DatabaseCore, dao models.DatabaseDao) models.Response {
+	return dao.CreateData(instance, db)
 }
-func (instance *Car) RecordShow(db models.BaseDatabase) models.Response {
-	err := db.ShowData(instance)
+func (instance *Car) RecordShow(db models.DatabaseCore, dao models.DatabaseDao) models.Response {
+	err := dao.ShowData(instance, db)
 	return err
 }
-func (instance *Car) RecordDelete(db models.BaseDatabase) models.Response {
-	return db.DeleteData(instance)
+func (instance *Car) RecordDelete(db models.DatabaseCore, dao models.DatabaseDao) models.Response {
+	return dao.DeleteData(instance, db)
 }
-func (instance *Car) RecordUpdate(db models.BaseDatabase) models.Response {
-	return db.UpdateData(instance)
+func (instance *Car) RecordUpdate(db models.DatabaseCore, dao models.DatabaseDao) models.Response {
+	return dao.UpdateData(instance, db)
+}
+func (instance *Car) GetId() string {
+	return instance.Car_id
+}
+
+func (instance *Car) GetQueryId(c *fiber.Ctx) error {
+	id := c.Query("id", "")
+	instance.Car_id = id
+	return nil
+}
+
+func (instance *Car) GetQueryParams(c *fiber.Ctx) error {
+	instance.Mark = c.Query("mark", "")
+	instance.Year = c.Query("year", "")
+	return nil
+}
+
+func (instance *Car) GetBodyParams(c *fiber.Ctx) error {
+	if err := c.BodyParser(&instance); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (instance *Car) OutputGet() CarOutput {
+	var newCar CarOutput
+	newCar.Mark = instance.Mark
+	newCar.Year = instance.Year
+
+	if instance.Car_id != "" {
+		objID, err := primitive.ObjectIDFromHex(instance.Car_id)
+		if err != nil {
+			return newCar
+		}
+
+		newCar.Car_id = objID
+	}
+
+	return newCar
 }

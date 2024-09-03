@@ -12,99 +12,89 @@ type TaskDao struct{}
 
 func (currentlDB *TaskDao) CreateData(data models.Table, core models.DatabaseCore) models.Response {
 
-	user, resp := currentlDB.getData(data)
+	task, resp := currentlDB.getData(data)
 	if resp != nil {
 		return resp
 	}
 
-	dbConnect := currentlDB.convertToPostgres(core)
+	dbConnect := convertToPostgres(core)
 	if dbConnect == nil {
-		return responses.ResponseUser{}.BadCreate()
+		return responses.ResponseTask{}.InternalError()
 	}
 
-	if result := dbConnect.Instance.Create(&user); result.Error != nil {
+	if result := dbConnect.Instance.Create(&task); result.Error != nil {
 		log.Debug("create record error!")
-		return responses.ResponseUser{}.BadCreate()
+		return responses.ResponseTask{}.BadCreate()
 	}
 
-	return responses.ResponseUser{}.GoodCreate()
+	return responses.ResponseTask{}.GoodCreate()
 }
 
 func (currentlDB *TaskDao) UpdateData(data models.Table, core models.DatabaseCore) models.Response {
 
-	user, resp := currentlDB.getData(data)
+	task, resp := currentlDB.getData(data)
 	if resp != nil {
 		return resp
 	}
-	id := user.GetId()
 
-	dbConnect := currentlDB.convertToPostgres(core)
+	dbConnect := convertToPostgres(core)
 	if dbConnect == nil {
-		return responses.ResponseUser{}.BadCreate()
+		return responses.ResponseTask{}.InternalError()
 	}
 
-	if result := dbConnect.Instance.First(&user, id); result.Error != nil {
+	if result := dbConnect.Instance.Updates(&task); result.Error != nil {
 		log.Debug("update record error!")
-		return responses.ResponseUser{}.BadUpdate()
+		return responses.ResponseTask{}.BadUpdate()
 	}
-	return responses.ResponseUser{}.GoodUpdate()
+	return responses.ResponseTask{}.GoodUpdate()
 }
 
 func (currentlDB *TaskDao) DeleteData(data models.Table, core models.DatabaseCore) models.Response {
 
-	user, resp := currentlDB.getData(data)
+	task, resp := currentlDB.getData(data)
 	if resp != nil {
 		return resp
 	}
-	id := user.GetId()
+	id := task.GetId()
 
-	dbConnect := currentlDB.convertToPostgres(core)
+	dbConnect := convertToPostgres(core)
 	if dbConnect == nil {
-		return responses.ResponseUser{}.BadCreate()
+		return responses.ResponseTask{}.InternalError()
 	}
 
-	result := dbConnect.Instance.Delete(&user, id)
+	result := dbConnect.Instance.Delete(&task, id)
 	if result.RowsAffected == 0 || result.Error != nil {
-		return responses.ResponseUser{}.BadDelete()
+		return responses.ResponseTask{}.BadDelete()
 	}
-	return responses.ResponseUser{}.GoodDelete()
+	return responses.ResponseTask{}.GoodDelete()
 }
 
 func (currentlDB *TaskDao) ShowData(data models.Table, core models.DatabaseCore) models.Response {
 
-	user, resp := currentlDB.getData(data)
+	task, resp := currentlDB.getData(data)
 	if resp != nil {
 		return resp
 	}
-	var finded []tables.User
+	var finded []tables.Task
 
-	dbConnect := currentlDB.convertToPostgres(core)
+	dbConnect := convertToPostgres(core)
 	if dbConnect == nil {
-		return responses.ResponseUser{}.BadCreate()
+		return responses.ResponseTask{}.InternalError()
 	}
 
-	results := dbConnect.Instance.Find(&finded, user)
+	results := dbConnect.Instance.Find(&finded, task)
 	if results.Error != nil {
 		log.Debug("show record error!")
-		return responses.ResponseUser{}.BadShow()
+		return responses.ResponseTask{}.BadShow()
 	}
 
-	return responses.ResponseUser{}.GoodShow(finded)
+	return responses.ResponseTask{}.GoodShow(finded)
 }
 
 func (currentlDB *TaskDao) getData(temp models.Table) (tables.Task, models.Response) {
 	task, ok := temp.(*tables.Task)
 	if ok == false {
-		return tables.Task{}, responses.ResponseUser{}.BadCreate()
+		return tables.Task{}, responses.ResponseTask{}.InternalError()
 	}
 	return *task, nil
-}
-
-func (currentlDB *TaskDao) convertToPostgres(interf models.DatabaseCore) *PostgresDatabase {
-	dbConnect, err := interf.(*PostgresDatabase)
-	if !err {
-		return nil
-	}
-
-	return dbConnect
 }

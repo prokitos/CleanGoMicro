@@ -17,9 +17,9 @@ func (currentlDB *UserDao) CreateData(data models.Table, core models.DatabaseCor
 		return resp
 	}
 
-	dbConnect := currentlDB.convertToPostgres(core)
+	dbConnect := convertToPostgres(core)
 	if dbConnect == nil {
-		return responses.ResponseUser{}.BadCreate()
+		return responses.ResponseUser{}.InternalError()
 	}
 
 	if result := dbConnect.Instance.Create(&user); result.Error != nil {
@@ -36,14 +36,13 @@ func (currentlDB *UserDao) UpdateData(data models.Table, core models.DatabaseCor
 	if resp != nil {
 		return resp
 	}
-	id := user.GetId()
 
-	dbConnect := currentlDB.convertToPostgres(core)
+	dbConnect := convertToPostgres(core)
 	if dbConnect == nil {
-		return responses.ResponseUser{}.BadCreate()
+		return responses.ResponseUser{}.InternalError()
 	}
 
-	if result := dbConnect.Instance.First(&user, id); result.Error != nil {
+	if result := dbConnect.Instance.Updates(&user); result.Error != nil {
 		log.Debug("update record error!")
 		return responses.ResponseUser{}.BadUpdate()
 	}
@@ -58,9 +57,9 @@ func (currentlDB *UserDao) DeleteData(data models.Table, core models.DatabaseCor
 	}
 	id := user.GetId()
 
-	dbConnect := currentlDB.convertToPostgres(core)
+	dbConnect := convertToPostgres(core)
 	if dbConnect == nil {
-		return responses.ResponseUser{}.BadCreate()
+		return responses.ResponseUser{}.InternalError()
 	}
 
 	result := dbConnect.Instance.Delete(&user, id)
@@ -78,9 +77,9 @@ func (currentlDB *UserDao) ShowData(data models.Table, core models.DatabaseCore)
 	}
 	var finded []tables.User
 
-	dbConnect := currentlDB.convertToPostgres(core)
+	dbConnect := convertToPostgres(core)
 	if dbConnect == nil {
-		return responses.ResponseUser{}.BadCreate()
+		return responses.ResponseUser{}.InternalError()
 	}
 
 	results := dbConnect.Instance.Find(&finded, user)
@@ -95,16 +94,7 @@ func (currentlDB *UserDao) ShowData(data models.Table, core models.DatabaseCore)
 func (currentlDB *UserDao) getData(temp models.Table) (tables.User, models.Response) {
 	person, ok := temp.(*tables.User)
 	if ok == false {
-		return tables.User{}, responses.ResponseUser{}.BadCreate()
+		return tables.User{}, responses.ResponseUser{}.InternalError()
 	}
 	return *person, nil
-}
-
-func (currentlDB *UserDao) convertToPostgres(interf models.DatabaseCore) *PostgresDatabase {
-	dbConnect, err := interf.(*PostgresDatabase)
-	if !err {
-		return nil
-	}
-
-	return dbConnect
 }

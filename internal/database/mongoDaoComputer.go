@@ -9,21 +9,28 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-func (currentlDB *MongoDatabase) CreateData(data models.Table) models.Response {
+type ComputerDao struct{}
+
+func (currentlDB *ComputerDao) CreateData(data models.Table, core models.DatabaseCore) models.Response {
 
 	computer, resp := currentlDB.getData(data)
 	if resp != nil {
 		return resp
 	}
 
-	collection := currentlDB.Instance.Database("test").Collection("testovs")
+	dbConnect := convertToMongo(core)
+	if dbConnect == nil {
+		return responses.ResponseComputer{}.InternalError()
+	}
+
+	collection := dbConnect.Instance.Database("test").Collection("comps")
 	_, err := collection.InsertOne(context.TODO(), computer)
 	checkError(err)
 
 	return responses.ResponseComputer{}.GoodCreate()
 }
 
-func (currentlDB *MongoDatabase) DeleteData(data models.Table) models.Response {
+func (currentlDB *ComputerDao) DeleteData(data models.Table, core models.DatabaseCore) models.Response {
 
 	computer, resp := currentlDB.getData(data)
 	if resp != nil {
@@ -31,7 +38,12 @@ func (currentlDB *MongoDatabase) DeleteData(data models.Table) models.Response {
 	}
 	temp := computer.OutputGet()
 
-	collection := currentlDB.Instance.Database("test").Collection("testovs")
+	dbConnect := convertToMongo(core)
+	if dbConnect == nil {
+		return responses.ResponseComputer{}.InternalError()
+	}
+
+	collection := dbConnect.Instance.Database("test").Collection("comps")
 	deleteResult, _ := collection.DeleteOne(context.TODO(), temp)
 	if deleteResult.DeletedCount == 0 {
 		return responses.ResponseComputer{}.BadDelete()
@@ -40,7 +52,7 @@ func (currentlDB *MongoDatabase) DeleteData(data models.Table) models.Response {
 	return responses.ResponseComputer{}.GoodDelete()
 }
 
-func (currentlDB *MongoDatabase) UpdateData(data models.Table) models.Response {
+func (currentlDB *ComputerDao) UpdateData(data models.Table, core models.DatabaseCore) models.Response {
 
 	computer, resp := currentlDB.getData(data)
 	if resp != nil {
@@ -49,14 +61,19 @@ func (currentlDB *MongoDatabase) UpdateData(data models.Table) models.Response {
 	temp := computer.OutputGet()
 	update := bson.D{{"$set", temp}}
 
-	collection := currentlDB.Instance.Database("test").Collection("testovs")
+	dbConnect := convertToMongo(core)
+	if dbConnect == nil {
+		return responses.ResponseComputer{}.InternalError()
+	}
+
+	collection := dbConnect.Instance.Database("test").Collection("comps")
 	_, err := collection.UpdateMany(context.TODO(), bson.D{{"_id", temp.Computer_id}}, update)
 	checkError(err)
 
 	return responses.ResponseComputer{}.GoodUpdate()
 }
 
-func (currentlDB *MongoDatabase) ShowData(data models.Table) models.Response {
+func (currentlDB *ComputerDao) ShowData(data models.Table, core models.DatabaseCore) models.Response {
 
 	computer, resp := currentlDB.getData(data)
 	if resp != nil {
@@ -64,7 +81,12 @@ func (currentlDB *MongoDatabase) ShowData(data models.Table) models.Response {
 	}
 	temp := computer.OutputGet()
 
-	collection := currentlDB.Instance.Database("test").Collection("testovs")
+	dbConnect := convertToMongo(core)
+	if dbConnect == nil {
+		return responses.ResponseComputer{}.InternalError()
+	}
+
+	collection := dbConnect.Instance.Database("test").Collection("comps")
 	cur, err := collection.Find(context.TODO(), temp)
 	checkError(err)
 	var finded []tables.Computer
@@ -79,10 +101,10 @@ func (currentlDB *MongoDatabase) ShowData(data models.Table) models.Response {
 	return responses.ResponseComputer{}.GoodShow(finded)
 }
 
-func (currentlDB *MongoDatabase) getData(temp models.Table) (tables.Computer, models.Response) {
+func (currentlDB *ComputerDao) getData(temp models.Table) (tables.Computer, models.Response) {
 	devices, ok := temp.(*tables.Computer)
 	if ok == false {
-		return tables.Computer{}, responses.ResponseComputer{}.BadCreate()
+		return tables.Computer{}, responses.ResponseComputer{}.InternalError()
 	}
 	return *devices, nil
 }

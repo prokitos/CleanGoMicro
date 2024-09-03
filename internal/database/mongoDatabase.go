@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"modules/internal/config"
+	"modules/internal/models"
 
 	"github.com/gofiber/fiber/v2/log"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -37,4 +38,13 @@ func (currentlDB *MongoDatabase) OpenConnection(config config.MainConfig) {
 
 func (currentlDB *MongoDatabase) GlobalSet() {
 	GlobalMongo = currentlDB
+}
+
+func convertToMongo(interf models.DatabaseCore) *MongoDatabase {
+	dbConnect, err := interf.(*MongoDatabase)
+	if !err {
+		return nil
+	}
+
+	return dbConnect
 }
