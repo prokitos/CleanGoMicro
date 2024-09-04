@@ -14,58 +14,35 @@ type ResponseComputer struct {
 }
 
 func (instance ResponseComputer) GoodCreate() models.Response {
-	instance.Code = 200
-	instance.Description = "computer create success"
-	instance.Computers = nil
-	return instance.GetResponse()
+	return ResponseBase{}.GoodCreate("computer")
 }
 func (instance ResponseComputer) BadCreate() models.Response {
-	instance.Code = 400
-	instance.Description = "computer create error"
-	instance.Computers = nil
-	return instance.GetResponse()
+	return ResponseBase{}.BadCreate("computer")
 }
 func (instance ResponseComputer) GoodUpdate() models.Response {
-	instance.Code = 200
-	instance.Description = "computer update success"
-	instance.Computers = nil
-	return instance.GetResponse()
+	return ResponseBase{}.GoodUpdate("computer")
 }
 func (instance ResponseComputer) BadUpdate() models.Response {
-	instance.Code = 400
-	instance.Description = "computer update error"
-	instance.Computers = nil
-	return instance.GetResponse()
+	return ResponseBase{}.BadUpdate("computer")
 }
 func (instance ResponseComputer) GoodDelete() models.Response {
-	instance.Code = 200
-	instance.Description = "computer delete success"
-	instance.Computers = nil
-	return instance.GetResponse()
+	return ResponseBase{}.GoodDelete("computer")
 }
 func (instance ResponseComputer) BadDelete() models.Response {
-	instance.Code = 400
-	instance.Description = "computer delete error"
-	instance.Computers = nil
-	return instance.GetResponse()
+	return ResponseBase{}.BadDelete("computer")
 }
 func (instance ResponseComputer) GoodShow(curComputer []tables.Computer) models.Response {
-	instance.Code = 200
-	instance.Description = "computer show success"
-	instance.Computers = curComputer
-	return instance.GetResponse()
+	var items []models.Table
+	for i := 0; i < len(curComputer); i++ {
+		items = append(items, &curComputer[i])
+	}
+	return ResponseBase{}.GoodShow(items, "computer")
 }
 func (instance ResponseComputer) BadShow() models.Response {
-	instance.Code = 400
-	instance.Description = "computer show error"
-	instance.Computers = nil
-	return instance.GetResponse()
+	return ResponseBase{}.BadShow("computer")
 }
 func (instance ResponseComputer) InternalError() models.Response {
-	instance.Code = 400
-	instance.Description = "internal error"
-	instance.Computers = nil
-	return instance.GetResponse()
+	return ResponseBase{}.InternalError()
 }
 
 func (instance ResponseComputer) GetError(c *fiber.Ctx) error {
@@ -76,10 +53,4 @@ func (instance ResponseComputer) Validate() bool {
 		return true
 	}
 	return false
-}
-
-func (instance ResponseComputer) GetResponse() models.Response {
-	var temp models.Response
-	temp = instance
-	return temp
 }

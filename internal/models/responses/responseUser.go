@@ -14,58 +14,35 @@ type ResponseUser struct {
 }
 
 func (instance ResponseUser) GoodCreate() models.Response {
-	instance.Code = 200
-	instance.Description = "user create success"
-	instance.Users = nil
-	return instance.GetResponse()
+	return ResponseBase{}.GoodCreate("user")
 }
 func (instance ResponseUser) BadCreate() models.Response {
-	instance.Code = 400
-	instance.Description = "user create error"
-	instance.Users = nil
-	return instance.GetResponse()
+	return ResponseBase{}.BadCreate("user")
 }
 func (instance ResponseUser) GoodUpdate() models.Response {
-	instance.Code = 200
-	instance.Description = "user update success"
-	instance.Users = nil
-	return instance.GetResponse()
+	return ResponseBase{}.GoodUpdate("user")
 }
 func (instance ResponseUser) BadUpdate() models.Response {
-	instance.Code = 400
-	instance.Description = "user update error"
-	instance.Users = nil
-	return instance.GetResponse()
+	return ResponseBase{}.BadUpdate("user")
 }
 func (instance ResponseUser) GoodDelete() models.Response {
-	instance.Code = 200
-	instance.Description = "user delete success"
-	instance.Users = nil
-	return instance.GetResponse()
+	return ResponseBase{}.GoodDelete("user")
 }
 func (instance ResponseUser) BadDelete() models.Response {
-	instance.Code = 400
-	instance.Description = "user delete error"
-	instance.Users = nil
-	return instance.GetResponse()
+	return ResponseBase{}.BadDelete("user")
 }
 func (instance ResponseUser) GoodShow(curUser []tables.User) models.Response {
-	instance.Code = 200
-	instance.Description = "user show success"
-	instance.Users = curUser
-	return instance.GetResponse()
+	var items []models.Table
+	for i := 0; i < len(curUser); i++ {
+		items = append(items, &curUser[i])
+	}
+	return ResponseBase{}.GoodShow(items, "user")
 }
 func (instance ResponseUser) BadShow() models.Response {
-	instance.Code = 400
-	instance.Description = "user show error"
-	instance.Users = nil
-	return instance.GetResponse()
+	return ResponseBase{}.BadShow("user")
 }
 func (instance ResponseUser) InternalError() models.Response {
-	instance.Code = 400
-	instance.Description = "internal error"
-	instance.Users = nil
-	return instance.GetResponse()
+	return ResponseBase{}.InternalError()
 }
 
 func (instance ResponseUser) GetError(c *fiber.Ctx) error {
@@ -77,10 +54,4 @@ func (instance ResponseUser) Validate() bool {
 		return true
 	}
 	return false
-}
-
-func (instance ResponseUser) GetResponse() models.Response {
-	var temp models.Response
-	temp = instance
-	return temp
 }

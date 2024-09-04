@@ -14,58 +14,35 @@ type ResponseCar struct {
 }
 
 func (instance ResponseCar) GoodCreate() models.Response {
-	instance.Code = 200
-	instance.Description = "car create success"
-	instance.Cars = nil
-	return instance.GetResponse()
+	return ResponseBase{}.GoodCreate("car")
 }
 func (instance ResponseCar) BadCreate() models.Response {
-	instance.Code = 400
-	instance.Description = "car create error"
-	instance.Cars = nil
-	return instance.GetResponse()
+	return ResponseBase{}.BadCreate("car")
 }
 func (instance ResponseCar) GoodUpdate() models.Response {
-	instance.Code = 200
-	instance.Description = "car update success"
-	instance.Cars = nil
-	return instance.GetResponse()
+	return ResponseBase{}.GoodUpdate("car")
 }
 func (instance ResponseCar) BadUpdate() models.Response {
-	instance.Code = 400
-	instance.Description = "car update error"
-	instance.Cars = nil
-	return instance.GetResponse()
+	return ResponseBase{}.BadUpdate("car")
 }
 func (instance ResponseCar) GoodDelete() models.Response {
-	instance.Code = 200
-	instance.Description = "car delete success"
-	instance.Cars = nil
-	return instance.GetResponse()
+	return ResponseBase{}.GoodDelete("car")
 }
 func (instance ResponseCar) BadDelete() models.Response {
-	instance.Code = 400
-	instance.Description = "car delete error"
-	instance.Cars = nil
-	return instance.GetResponse()
+	return ResponseBase{}.BadDelete("car")
 }
 func (instance ResponseCar) GoodShow(curCar []tables.Car) models.Response {
-	instance.Code = 200
-	instance.Description = "car show success"
-	instance.Cars = curCar
-	return instance.GetResponse()
+	var items []models.Table
+	for i := 0; i < len(curCar); i++ {
+		items = append(items, &curCar[i])
+	}
+	return ResponseBase{}.GoodShow(items, "car")
 }
 func (instance ResponseCar) BadShow() models.Response {
-	instance.Code = 400
-	instance.Description = "car show error"
-	instance.Cars = nil
-	return instance.GetResponse()
+	return ResponseBase{}.BadShow("car")
 }
 func (instance ResponseCar) InternalError() models.Response {
-	instance.Code = 400
-	instance.Description = "internal error"
-	instance.Cars = nil
-	return instance.GetResponse()
+	return ResponseBase{}.InternalError()
 }
 
 func (instance ResponseCar) GetError(c *fiber.Ctx) error {
@@ -76,10 +53,4 @@ func (instance ResponseCar) Validate() bool {
 		return true
 	}
 	return false
-}
-
-func (instance ResponseCar) GetResponse() models.Response {
-	var temp models.Response
-	temp = instance
-	return temp
 }

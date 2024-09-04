@@ -14,58 +14,35 @@ type ResponseTask struct {
 }
 
 func (instance ResponseTask) GoodCreate() models.Response {
-	instance.Code = 200
-	instance.Description = "task create success"
-	instance.Tasks = nil
-	return instance.GetResponse()
+	return ResponseBase{}.GoodCreate("task")
 }
 func (instance ResponseTask) BadCreate() models.Response {
-	instance.Code = 400
-	instance.Description = "task create error"
-	instance.Tasks = nil
-	return instance.GetResponse()
+	return ResponseBase{}.BadCreate("task")
 }
 func (instance ResponseTask) GoodUpdate() models.Response {
-	instance.Code = 200
-	instance.Description = "task update success"
-	instance.Tasks = nil
-	return instance.GetResponse()
+	return ResponseBase{}.GoodUpdate("task")
 }
 func (instance ResponseTask) BadUpdate() models.Response {
-	instance.Code = 400
-	instance.Description = "task update error"
-	instance.Tasks = nil
-	return instance.GetResponse()
+	return ResponseBase{}.BadUpdate("task")
 }
 func (instance ResponseTask) GoodDelete() models.Response {
-	instance.Code = 200
-	instance.Description = "task delete success"
-	instance.Tasks = nil
-	return instance.GetResponse()
+	return ResponseBase{}.GoodDelete("task")
 }
 func (instance ResponseTask) BadDelete() models.Response {
-	instance.Code = 400
-	instance.Description = "task delete error"
-	instance.Tasks = nil
-	return instance.GetResponse()
+	return ResponseBase{}.BadDelete("task")
 }
 func (instance ResponseTask) GoodShow(curTask []tables.Task) models.Response {
-	instance.Code = 200
-	instance.Description = "task show success"
-	instance.Tasks = curTask
-	return instance.GetResponse()
+	var items []models.Table
+	for i := 0; i < len(curTask); i++ {
+		items = append(items, &curTask[i])
+	}
+	return ResponseBase{}.GoodShow(items, "task")
 }
 func (instance ResponseTask) BadShow() models.Response {
-	instance.Code = 400
-	instance.Description = "task show error"
-	instance.Tasks = nil
-	return instance.GetResponse()
+	return ResponseBase{}.BadShow("task")
 }
 func (instance ResponseTask) InternalError() models.Response {
-	instance.Code = 400
-	instance.Description = "internal error"
-	instance.Tasks = nil
-	return instance.GetResponse()
+	return ResponseBase{}.InternalError()
 }
 
 func (instance ResponseTask) GetError(c *fiber.Ctx) error {
@@ -76,10 +53,4 @@ func (instance ResponseTask) Validate() bool {
 		return true
 	}
 	return false
-}
-
-func (instance ResponseTask) GetResponse() models.Response {
-	var temp models.Response
-	temp = instance
-	return temp
 }
