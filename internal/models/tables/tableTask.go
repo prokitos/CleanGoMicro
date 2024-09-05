@@ -7,6 +7,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+// таблица Task. Методы для получения REST данных, а также выполнение команд в нужном DAO. Вызывается из сервисов.
+
 type Task struct {
 	Task_id     int    `json:"id" example:"12" gorm:"unique;primaryKey;autoIncrement"`
 	Description string `json:"description" example:"something"`

@@ -7,6 +7,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+// роуты для users
+
 func getUser(c *fiber.Ctx) error {
 	var curUser tables.User
 	curUser.GetQueryParams(c)

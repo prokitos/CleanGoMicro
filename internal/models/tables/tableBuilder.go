@@ -2,6 +2,8 @@ package tables
 
 import "modules/internal/models"
 
+// на данный момент не используется, нужен для тестов. быстрое создание экземпляров. Вызывается из сервисов.
+
 type TableBuilder struct {
 	Instance models.Table
 }

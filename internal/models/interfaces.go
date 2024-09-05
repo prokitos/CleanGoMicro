@@ -6,6 +6,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+// все интерфейсы
+
 type Response interface {
 	GetError(c *fiber.Ctx) error
 	Validate() bool

@@ -7,6 +7,8 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
+// таблица Car. Методы для получения REST данных, а также выполнение команд в нужном DAO. Вызывается из сервисов.
+
 type Car struct {
 	Car_id string `json:"car_id,omitempty" example:"12" bson:"_id,omitempty"`
 	Mark   string `json:"mark" example:"lada" bson:"mark,omitempty"`

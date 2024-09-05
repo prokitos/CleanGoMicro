@@ -5,13 +5,10 @@ import (
 	"gorm.io/gorm"
 )
 
+// глобальные переменные для хранения всех подключений к бд.
+
 var GlobalMongo *MongoDatabase
 var GlobalPostgres *PostgresDatabase
-
-var GlobalUserDao *UserDao
-var GlobalTaskDao *TaskDao
-var GlobalComputerDao *ComputerDao
-var GlobalCarDao *CarDao
 
 type MongoDatabase struct {
 	Instance *mongo.Client
@@ -20,7 +17,7 @@ type PostgresDatabase struct {
 	Instance *gorm.DB
 }
 
-func checkError(err error) {
+func CheckError(err error) {
 	if err != nil {
 		panic(err)
 	}

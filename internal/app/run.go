@@ -9,6 +9,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+// запуск и остановка сервера.
+
 type App struct {
 	Server *fiber.App
 }

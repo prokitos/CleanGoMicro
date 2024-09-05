@@ -7,6 +7,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+// роуты для tasks
+
 func getTask(c *fiber.Ctx) error {
 	var curTask tables.Task
 	curTask.GetQueryParams(c)

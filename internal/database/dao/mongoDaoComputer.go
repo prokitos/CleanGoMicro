@@ -1,0 +1,123 @@
+package dao
+
+import (
+	"context"
+	"modules/internal/models"
+	"modules/internal/models/responses"
+	"modules/internal/models/tables"
+
+	"go.mongodb.org/mongo-driver/bson"
+)
+
+// (дао/круд) для таблицы Computer. вызывается из соответсвующей таблицы.
+
+type ComputerDao struct{}
+
+func (currentlDB *ComputerDao) CreateData(data models.Table, core models.DatabaseCore) models.Response {
+
+	computer, resp := currentlDB.getData(data)
+	if resp != nil {
+		return resp
+	}
+
+	dbConnect := convertToMongo(core)
+	if dbConnect == nil {
+		return responses.ResponseComputer{}.InternalError()
+	}
+
+	collection := dbConnect.Instance.Database("test").Collection("comps")
+	_, err := collection.InsertOne(context.TODO(), computer)
+	if err != nil {
+		return responses.ResponseComputer{}.BadCreate()
+	}
+
+	return responses.ResponseComputer{}.GoodCreate()
+}
+
+func (currentlDB *ComputerDao) DeleteData(data models.Table, core models.DatabaseCore) models.Response {
+
+	computer, resp := currentlDB.getData(data)
+	if resp != nil {
+		return resp
+	}
+	temp := computer.OutputGet()
+
+	dbConnect := convertToMongo(core)
+	if dbConnect == nil {
+		return responses.ResponseComputer{}.InternalError()
+	}
+
+	collection := dbConnect.Instance.Database("test").Collection("comps")
+	deleteResult, _ := collection.DeleteOne(context.TODO(), temp)
+	if deleteResult.DeletedCount == 0 {
+		return responses.ResponseComputer{}.BadDelete()
+	}
+
+	return responses.ResponseComputer{}.GoodDelete()
+}
+
+func (currentlDB *ComputerDao) UpdateData(data models.Table, core models.DatabaseCore) models.Response {
+
+	computer, resp := currentlDB.getData(data)
+	if resp != nil {
+		return resp
+	}
+	temp := computer.OutputGet()
+	update := bson.D{{"$set", temp}}
+
+	dbConnect := convertToMongo(core)
+	if dbConnect == nil {
+		return responses.ResponseComputer{}.InternalError()
+	}
+
+	collection := dbConnect.Instance.Database("test").Collection("comps")
+	_, err := collection.UpdateMany(context.TODO(), bson.D{{"_id", temp.Computer_id}}, update)
+	if err != nil {
+		return responses.ResponseComputer{}.BadUpdate()
+	}
+
+	return responses.ResponseComputer{}.GoodUpdate()
+}
+
+func (currentlDB *ComputerDao) ShowData(data models.Table, core models.DatabaseCore) models.Response {
+
+	computer, resp := currentlDB.getData(data)
+	if resp != nil {
+		return resp
+	}
+	temp := computer.OutputGet()
+
+	dbConnect := convertToMongo(core)
+	if dbConnect == nil {
+		return responses.ResponseComputer{}.InternalError()
+	}
+
+	collection := dbConnect.Instance.Database("test").Collection("comps")
+	cur, err := collection.Find(context.TODO(), temp)
+	if err != nil {
+		return responses.ResponseComputer{}.BadShow()
+	}
+	if cur.RemainingBatchLength() == 0 {
+		return responses.ResponseCar{}.BadShow()
+	}
+
+	var finded []tables.Computer
+	for cur.Next(context.TODO()) {
+		var elem tables.Computer
+		err := cur.Decode(&elem)
+		if err != nil {
+			return responses.ResponseComputer{}.InternalError()
+		}
+		finded = append(finded, elem)
+	}
+
+	return responses.ResponseComputer{}.GoodShow(finded)
+}
+
+func (currentlDB *ComputerDao) getData(temp models.Table) (tables.Computer, models.Response) {
+	devices, ok := temp.(*tables.Computer)
+	if ok == false {
+		return tables.Computer{}, responses.ResponseComputer{}.InternalError()
+	}
+	return *devices, nil
+}

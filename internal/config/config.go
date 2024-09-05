@@ -6,6 +6,8 @@ import (
 	"github.com/ilyakaznacheev/cleanenv"
 )
 
+// структура конфигов, а также их считывание из файла, и загрузка в эти стуктуры.
+
 type MainConfig struct {
 	Server     ServerConfig   `yaml:"server"`
 	PostgresDB PostgresConfig `yaml:"postgres"`
@@ -33,7 +35,11 @@ func (cfg *MainConfig) ConfigMustLoad(name string) {
 	path := "./config/" + name + ".yaml"
 
 	if _, err := os.Stat(path); os.IsNotExist(err) {
-		panic("nothing from this path")
+		pathBackup := "../config/" + name + ".yaml"
+		if _, err := os.Stat(pathBackup); os.IsNotExist(err) {
+			panic("nothing from this path")
+		}
+		path = pathBackup
 	}
 
 	if err := cleanenv.ReadConfig(path, cfg); err != nil {

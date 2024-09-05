@@ -11,6 +11,8 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+// запуск логов; загрузка конфигов; запуск бд и сервера.
+
 func main() {
 	log.SetLevel(log.DebugLevel)
 	log.Debug("log is loaded")

@@ -4,6 +4,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+// здесь хранятся хэндлеры.
+
 func SetHandlers(instance *fiber.App) {
 	instance.Get("/user", getUser)
 	instance.Post("/user", insertUser)

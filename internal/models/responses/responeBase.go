@@ -1,10 +1,13 @@
 package responses
 
 import (
+	"errors"
 	"modules/internal/models"
 
 	"github.com/gofiber/fiber/v2"
 )
+
+// основные респонсы к таблицам. разные таблицы просто меняют описание ответов.
 
 type ResponseBase struct {
 	Description string         `json:"description"       		 example:"description"`
@@ -81,4 +84,9 @@ func (instance ResponseBase) GetResponse() models.Response {
 	var temp models.Response
 	temp = instance
 	return temp
+}
+
+func (instance ResponseBase) BaseServerError() error {
+	result := "Code:400; Description: Internal Error"
+	return errors.New(result)
 }

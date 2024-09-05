@@ -7,6 +7,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+// роуты для computers
+
 func getComputer(c *fiber.Ctx) error {
 	var curComputer tables.Computer
 	curComputer.GetQueryParams(c)

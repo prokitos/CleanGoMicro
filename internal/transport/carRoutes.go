@@ -7,6 +7,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+// роуты для cars
+
 func getCar(c *fiber.Ctx) error {
 	var curCar tables.Car
 	curCar.GetQueryParams(c)

@@ -7,6 +7,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+// ответы для таблицы Car
+
 type ResponseCar struct {
 	Description string       `json:"description"       		 example:"description"`
 	Code        int          `json:"code"               		 example:"status"`

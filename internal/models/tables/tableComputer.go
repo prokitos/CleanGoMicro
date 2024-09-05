@@ -8,6 +8,8 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
+// таблица Computer. Методы для получения REST данных, а также выполнение команд в нужном DAO. Вызывается из сервисов.
+
 type Computer struct {
 	Computer_id string `json:"computer_id,omitempty" example:"12" bson:"_id,omitempty"`
 	Price       int    `json:"price,omitempty" example:"125000" bson:"price,omitempty"`

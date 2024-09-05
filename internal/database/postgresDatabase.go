@@ -3,7 +3,6 @@ package database
 import (
 	"fmt"
 	"modules/internal/config"
-	"modules/internal/models"
 	"modules/internal/models/responses"
 	"modules/internal/models/tables"
 
@@ -11,6 +10,8 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
+
+// запуск, соединение и миграция для postgresDB. (если будут подключения к нескольким базам postgres, то создавать ещё файлы, и делать им названия postgresNameDatabase)
 
 func (currentlDB *PostgresDatabase) Run(config config.MainConfig) {
 	currentlDB.OpenConnection(config)
@@ -49,7 +50,7 @@ func (currentlDB *PostgresDatabase) checkDatabaseCreated(config config.MainConfi
 	db, err := gorm.Open(postgres.Open(connectStr), &gorm.Config{})
 	if err != nil {
 		log.Error("database don't open")
-		return responses.ResponseGlobal{}.InternalError()
+		return responses.ResponseBase{}.BaseServerError()
 	}
 
 	// закрытие бд
@@ -63,7 +64,7 @@ func (currentlDB *PostgresDatabase) checkDatabaseCreated(config config.MainConfi
 	rs := db.Raw(stmt)
 	if rs.Error != nil {
 		log.Error("error, dont read bd")
-		return responses.ResponseGlobal{}.InternalError()
+		return responses.ResponseBase{}.BaseServerError()
 	}
 
 	// если нет, то создать
@@ -72,7 +73,7 @@ func (currentlDB *PostgresDatabase) checkDatabaseCreated(config config.MainConfi
 		stmt := fmt.Sprintf("CREATE DATABASE %s;", config.PostgresDB.Name)
 		if rs := db.Exec(stmt); rs.Error != nil {
 			log.Error("error, dont create a database")
-			return responses.ResponseGlobal{}.InternalError()
+			responses.ResponseBase{}.BaseServerError()
 		}
 	}
 
@@ -81,13 +82,4 @@ func (currentlDB *PostgresDatabase) checkDatabaseCreated(config config.MainConfi
 
 func (currentlDB *PostgresDatabase) GlobalSet() {
 	GlobalPostgres = currentlDB
-}
-
-func convertToPostgres(interf models.DatabaseCore) *PostgresDatabase {
-	dbConnect, err := interf.(*PostgresDatabase)
-	if !err {
-		return nil
-	}
-
-	return dbConnect
 }
