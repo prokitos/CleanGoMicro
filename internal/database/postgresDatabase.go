@@ -5,6 +5,7 @@ import (
 	"modules/internal/config"
 	"modules/internal/models/responses"
 	"modules/internal/models/tables"
+	"time"
 
 	"github.com/gofiber/fiber/v2/log"
 	"gorm.io/driver/postgres"
@@ -39,7 +40,19 @@ func (currentlDB *PostgresDatabase) OpenConnection(config config.MainConfig) {
 		panic("not connection to db")
 	}
 
+	sqlDB, err := db.DB()
+	if err != nil {
+		panic("not connection to db")
+	}
+
+	// ЕСЛИ OPEN МЕНЬШЕ ЧЕМ IDLE, ТО IDLE УМЕНЬШИТЬСЯ АВТОМАТИЧЕСКИ.
+	sqlDB.SetMaxIdleConns(4)                  // макс количетсво соединений которые мы храним в пуле. они активны и ожидают. Закрываются через SetConnMaxIdleTime.
+	sqlDB.SetMaxOpenConns(8)                  // макс количество открытых соединений. после использования часть уходит в пул, а часть закрывается.
+	sqlDB.SetConnMaxLifetime(0)               // сколько вообще может жить соединение с момента создания.
+	sqlDB.SetConnMaxIdleTime(1 * time.Minute) // сколько может жить соединение в пуле (idle).
+
 	currentlDB.Instance = db
+
 }
 
 // проверка если есть база данных. если нет, то создать.

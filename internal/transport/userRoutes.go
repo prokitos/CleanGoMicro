@@ -1,6 +1,7 @@
 package transport
 
 import (
+	"fmt"
 	"modules/internal/models/tables"
 	"modules/internal/services"
 
@@ -10,6 +11,7 @@ import (
 // роуты для users
 
 func getUser(c *fiber.Ctx) error {
+	//testConPool()
 	var curUser tables.User
 	curUser.GetQueryParams(c)
 	curUser.GetQueryId(c)
@@ -33,4 +35,11 @@ func updateUser(c *fiber.Ctx) error {
 	curUser.GetQueryParams(c)
 	curUser.GetQueryId(c)
 	return services.UserUpdate(curUser).GetError(c)
+}
+
+func testConPool() {
+	for i := 0; i < 100000; i++ {
+		go services.UserShow(tables.User{})
+	}
+	fmt.Println("end")
 }
