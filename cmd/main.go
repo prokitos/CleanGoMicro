@@ -21,10 +21,12 @@ func main() {
 	cfg.ConfigMustLoad("local")
 	log.Debug("config is loaded")
 
-	var userDB database.PostgresDatabase
-	userDB.Run(cfg)
-	var computerDB database.MongoDatabase
-	computerDB.Run(cfg)
+	var PGDB database.PostgresDatabase
+	PGDB.Run(cfg)
+	var MNGDB database.MongoDatabase
+	MNGDB.Run(cfg)
+	var SQLTEDB database.SqliteDatabase
+	SQLTEDB.Run(cfg)
 
 	var application app.App
 	go application.NewServer(cfg.Server.Port)

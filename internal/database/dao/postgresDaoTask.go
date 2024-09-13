@@ -5,12 +5,17 @@ import (
 	"modules/internal/models/responses"
 	"modules/internal/models/tables"
 
-	"github.com/gofiber/fiber/v2/log"
+	log "github.com/sirupsen/logrus"
 )
 
 // (дао/круд) для таблицы Task. вызывается из соответсвующей таблицы.
 
 type TaskDao struct{}
+
+// функция которая возвращает респонс текущего дао. Нужен чтобы не менять кучу респонсов у новых дао.
+func (currentlDB *TaskDao) curResponse() responses.ResponseTask {
+	return responses.ResponseTask{}
+}
 
 func (currentlDB *TaskDao) CreateData(data models.Table, core models.DatabaseCore) models.Response {
 
@@ -21,15 +26,15 @@ func (currentlDB *TaskDao) CreateData(data models.Table, core models.DatabaseCor
 
 	dbConnect := convertToPostgres(core)
 	if dbConnect == nil {
-		return responses.ResponseTask{}.InternalError()
+		return currentlDB.curResponse().InternalError()
 	}
 
 	if result := dbConnect.Instance.Create(&task); result.Error != nil {
 		log.Debug("create record error!")
-		return responses.ResponseTask{}.BadCreate()
+		return currentlDB.curResponse().BadCreate()
 	}
 
-	return responses.ResponseTask{}.GoodCreate()
+	return currentlDB.curResponse().GoodCreate()
 }
 
 func (currentlDB *TaskDao) DeleteData(data models.Table, core models.DatabaseCore) models.Response {
@@ -42,14 +47,14 @@ func (currentlDB *TaskDao) DeleteData(data models.Table, core models.DatabaseCor
 
 	dbConnect := convertToPostgres(core)
 	if dbConnect == nil {
-		return responses.ResponseTask{}.InternalError()
+		return currentlDB.curResponse().InternalError()
 	}
 
 	result := dbConnect.Instance.Delete(&task, id)
 	if result.RowsAffected == 0 || result.Error != nil {
-		return responses.ResponseTask{}.BadDelete()
+		return currentlDB.curResponse().BadDelete()
 	}
-	return responses.ResponseTask{}.GoodDelete()
+	return currentlDB.curResponse().GoodDelete()
 }
 
 func (currentlDB *TaskDao) UpdateData(data models.Table, core models.DatabaseCore) models.Response {
@@ -61,14 +66,14 @@ func (currentlDB *TaskDao) UpdateData(data models.Table, core models.DatabaseCor
 
 	dbConnect := convertToPostgres(core)
 	if dbConnect == nil {
-		return responses.ResponseTask{}.InternalError()
+		return currentlDB.curResponse().InternalError()
 	}
 
 	if result := dbConnect.Instance.Updates(&task); result.Error != nil {
 		log.Debug("update record error!")
-		return responses.ResponseTask{}.BadUpdate()
+		return currentlDB.curResponse().BadUpdate()
 	}
-	return responses.ResponseTask{}.GoodUpdate()
+	return currentlDB.curResponse().GoodUpdate()
 }
 
 func (currentlDB *TaskDao) ShowData(data models.Table, core models.DatabaseCore) models.Response {
@@ -81,22 +86,23 @@ func (currentlDB *TaskDao) ShowData(data models.Table, core models.DatabaseCore)
 
 	dbConnect := convertToPostgres(core)
 	if dbConnect == nil {
-		return responses.ResponseTask{}.InternalError()
+		return currentlDB.curResponse().InternalError()
 	}
 
 	results := dbConnect.Instance.Find(&finded, task)
 	if results.Error != nil || results.RowsAffected == 0 {
 		log.Debug("show record error!")
-		return responses.ResponseTask{}.BadShow()
+		return currentlDB.curResponse().BadShow()
 	}
 
-	return responses.ResponseTask{}.GoodShow(finded)
+	return currentlDB.curResponse().GoodShow(finded)
 }
 
+// перево интерфейса таблицы в конкретную таблицу
 func (currentlDB *TaskDao) getData(temp models.Table) (tables.Task, models.Response) {
 	task, ok := temp.(*tables.Task)
 	if ok == false {
-		return tables.Task{}, responses.ResponseTask{}.InternalError()
+		return tables.Task{}, currentlDB.curResponse().InternalError()
 	}
 	return *task, nil
 }

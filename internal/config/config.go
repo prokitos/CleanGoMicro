@@ -12,6 +12,7 @@ type MainConfig struct {
 	Server     ServerConfig   `yaml:"server"`
 	PostgresDB PostgresConfig `yaml:"postgres"`
 	MongoDB    MongoConfig    `yaml:"mongo"`
+	SqliteDb   SqliteConfig   `yaml:"sqlite"`
 }
 
 type ServerConfig struct {
@@ -28,6 +29,9 @@ type PostgresConfig struct {
 type MongoConfig struct {
 	Host string `yaml:"host"`
 	Port string `yaml:"port"`
+}
+type SqliteConfig struct {
+	Name string `yaml:"name"`
 }
 
 func (cfg *MainConfig) ConfigMustLoad(name string) {

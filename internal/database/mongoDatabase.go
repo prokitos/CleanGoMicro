@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"modules/internal/config"
 
-	"github.com/gofiber/fiber/v2/log"
+	log "github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )

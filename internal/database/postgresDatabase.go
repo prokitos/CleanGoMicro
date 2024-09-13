@@ -7,7 +7,7 @@ import (
 	"modules/internal/models/tables"
 	"time"
 
-	"github.com/gofiber/fiber/v2/log"
+	log "github.com/sirupsen/logrus"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )

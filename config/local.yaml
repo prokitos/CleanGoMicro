@@ -11,3 +11,5 @@ postgres:
 mongo:
   port: "27017"
   host: "localhost"
+sqlite:
+  name: "test.db"

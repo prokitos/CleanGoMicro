@@ -9,11 +9,16 @@ import (
 
 var GlobalMongo *MongoDatabase
 var GlobalPostgres *PostgresDatabase
+var GlobalSqlite *SqliteDatabase
 
 type MongoDatabase struct {
 	Instance *mongo.Client
 }
 type PostgresDatabase struct {
+	Instance *gorm.DB
+}
+
+type SqliteDatabase struct {
 	Instance *gorm.DB
 }
 
