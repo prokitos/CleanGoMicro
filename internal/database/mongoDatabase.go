@@ -19,7 +19,7 @@ func (currentlDB *MongoDatabase) Run(config config.MainConfig) {
 }
 
 func (currentlDB *MongoDatabase) StartMigration() {
-	log.Debug("migration dont exist")
+	log.Debug("migration dont exist for this database")
 }
 
 func (currentlDB *MongoDatabase) OpenConnection(config config.MainConfig) {

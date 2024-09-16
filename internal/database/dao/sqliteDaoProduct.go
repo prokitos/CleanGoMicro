@@ -18,6 +18,7 @@ func (currentlDB *ProductDao) curResponse() responses.ResponseProduct {
 }
 
 func (currentlDB *ProductDao) CreateData(data models.Table, core models.DatabaseCore) models.Response {
+	log.Debug("dao ", core, " get = ", data)
 
 	prod, resp := currentlDB.getData(data)
 	if resp != nil {
@@ -34,10 +35,12 @@ func (currentlDB *ProductDao) CreateData(data models.Table, core models.Database
 		return currentlDB.curResponse().BadCreate()
 	}
 
+	log.Debug("dao complete")
 	return currentlDB.curResponse().GoodCreate()
 }
 
 func (currentlDB *ProductDao) DeleteData(data models.Table, core models.DatabaseCore) models.Response {
+	log.Debug("dao ", core, " get = ", data)
 
 	prod, resp := currentlDB.getData(data)
 	if resp != nil {
@@ -54,10 +57,13 @@ func (currentlDB *ProductDao) DeleteData(data models.Table, core models.Database
 	if result.RowsAffected == 0 || result.Error != nil {
 		return currentlDB.curResponse().BadDelete()
 	}
+
+	log.Debug("dao complete")
 	return currentlDB.curResponse().GoodDelete()
 }
 
 func (currentlDB *ProductDao) UpdateData(data models.Table, core models.DatabaseCore) models.Response {
+	log.Debug("dao ", core, " get = ", data)
 
 	prod, resp := currentlDB.getData(data)
 	if resp != nil {
@@ -73,10 +79,13 @@ func (currentlDB *ProductDao) UpdateData(data models.Table, core models.Database
 		log.Debug("update record error!")
 		return currentlDB.curResponse().BadUpdate()
 	}
+
+	log.Debug("dao complete")
 	return currentlDB.curResponse().GoodUpdate()
 }
 
 func (currentlDB *ProductDao) ShowData(data models.Table, core models.DatabaseCore) models.Response {
+	log.Debug("dao ", core, " get = ", data)
 
 	prod, resp := currentlDB.getData(data)
 	if resp != nil {
@@ -95,6 +104,7 @@ func (currentlDB *ProductDao) ShowData(data models.Table, core models.DatabaseCo
 		return currentlDB.curResponse().BadShow()
 	}
 
+	log.Debug("dao complete")
 	return currentlDB.curResponse().GoodShow(finded)
 }
 

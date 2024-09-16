@@ -24,7 +24,8 @@ func (currentlDB *SqliteDatabase) StartMigration() {
 
 func (currentlDB *SqliteDatabase) OpenConnection(config config.MainConfig) {
 
-	db, err := gorm.Open(sqlite.Open(config.SqliteDb.Name), &gorm.Config{})
+	dbpath := config.SqliteDb.Name
+	db, err := gorm.Open(sqlite.Open(dbpath), &gorm.Config{})
 	if err != nil {
 		panic("not connection to db")
 	}

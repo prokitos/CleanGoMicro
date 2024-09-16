@@ -6,6 +6,7 @@ import (
 	"modules/internal/models/responses"
 	"modules/internal/models/tables"
 
+	log "github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/bson"
 )
 
@@ -19,6 +20,7 @@ func (currentlDB *CarDao) curResponse() responses.ResponseCar {
 }
 
 func (currentlDB *CarDao) CreateData(data models.Table, core models.DatabaseCore) models.Response {
+	log.Debug("dao ", core, " get = ", data)
 
 	curCar, resp := currentlDB.getData(data)
 	if resp != nil {
@@ -36,10 +38,12 @@ func (currentlDB *CarDao) CreateData(data models.Table, core models.DatabaseCore
 		return currentlDB.curResponse().BadCreate()
 	}
 
+	log.Debug("dao complete")
 	return currentlDB.curResponse().GoodCreate()
 }
 
 func (currentlDB *CarDao) DeleteData(data models.Table, core models.DatabaseCore) models.Response {
+	log.Debug("dao ", core, " get = ", data)
 
 	curCar, resp := currentlDB.getData(data)
 	if resp != nil {
@@ -58,10 +62,12 @@ func (currentlDB *CarDao) DeleteData(data models.Table, core models.DatabaseCore
 		return currentlDB.curResponse().BadDelete()
 	}
 
+	log.Debug("dao complete")
 	return currentlDB.curResponse().GoodDelete()
 }
 
 func (currentlDB *CarDao) UpdateData(data models.Table, core models.DatabaseCore) models.Response {
+	log.Debug("dao ", core, " get = ", data)
 
 	curCar, resp := currentlDB.getData(data)
 	if resp != nil {
@@ -81,10 +87,12 @@ func (currentlDB *CarDao) UpdateData(data models.Table, core models.DatabaseCore
 		return currentlDB.curResponse().BadUpdate()
 	}
 
+	log.Debug("dao complete")
 	return currentlDB.curResponse().GoodUpdate()
 }
 
 func (currentlDB *CarDao) ShowData(data models.Table, core models.DatabaseCore) models.Response {
+	log.Debug("dao ", core, " get = ", data)
 
 	curCar, resp := currentlDB.getData(data)
 	if resp != nil {
@@ -116,6 +124,7 @@ func (currentlDB *CarDao) ShowData(data models.Table, core models.DatabaseCore) 
 		finded = append(finded, elem)
 	}
 
+	log.Debug("dao complete")
 	return currentlDB.curResponse().GoodShow(finded)
 }
 

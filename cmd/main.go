@@ -15,6 +15,7 @@ import (
 
 func main() {
 	log.SetLevel(log.DebugLevel)
+	//log.SetLevel(log.InfoLevel)
 	log.Debug("log is loaded")
 
 	var cfg config.MainConfig
@@ -27,6 +28,7 @@ func main() {
 	MNGDB.Run(cfg)
 	var SQLTEDB database.SqliteDatabase
 	SQLTEDB.Run(cfg)
+	log.Debug("databases is loaded")
 
 	var application app.App
 	go application.NewServer(cfg.Server.Port)
