@@ -19,7 +19,7 @@ func main() {
 	log.Debug("log is loaded")
 
 	var cfg config.MainConfig
-	cfg.ConfigMustLoad("local")
+	cfg.ConfigMustLoad("docker")
 	log.Debug("config is loaded")
 
 	var PGDB database.PostgresDatabase

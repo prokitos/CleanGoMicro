@@ -25,6 +25,10 @@ func (currentlDB *MongoDatabase) StartMigration() {
 func (currentlDB *MongoDatabase) OpenConnection(config config.MainConfig) {
 
 	connectStr := fmt.Sprintf("mongodb://%s:%s", config.MongoDB.Host, config.MongoDB.Port)
+	if config.MongoDB.User != "" && config.MongoDB.Pass != "" {
+		connectStr = fmt.Sprintf("mongodb://%s:%s@%s:%s", config.MongoDB.User, config.MongoDB.Pass, config.MongoDB.Host, config.MongoDB.Port)
+	}
+
 	client, err := mongo.NewClient(options.Client().ApplyURI(connectStr))
 	CheckError(err)
 
