@@ -1,8 +1,10 @@
 package transport
 
 import (
+	"modules/internal/metrics"
 	"modules/internal/models/tables"
 	"modules/internal/services"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -10,6 +12,12 @@ import (
 // роуты для tasks
 
 func getTask(c *fiber.Ctx) error {
+
+	start := time.Now()
+	defer func() {
+		metrics.ObserveRequest(time.Since(start), c.Response().StatusCode())
+	}()
+
 	var curTask tables.Task
 	curTask.GetQueryParams(c)
 	curTask.GetQueryId(c)
