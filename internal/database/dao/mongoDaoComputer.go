@@ -20,7 +20,7 @@ func (currentlDB *ComputerDao) curResponse() responses.ResponseComputer {
 }
 
 func (currentlDB *ComputerDao) CreateData(data models.Table, core models.DatabaseCore) models.Response {
-	log.Debug("dao ", core, " get = ", data)
+	log.Debug("dao get = ", data)
 
 	computer, resp := currentlDB.getData(data)
 	if resp != nil {
@@ -43,7 +43,7 @@ func (currentlDB *ComputerDao) CreateData(data models.Table, core models.Databas
 }
 
 func (currentlDB *ComputerDao) DeleteData(data models.Table, core models.DatabaseCore) models.Response {
-	log.Debug("dao ", core, " get = ", data)
+	log.Debug("dao get = ", data)
 
 	computer, resp := currentlDB.getData(data)
 	if resp != nil {
@@ -67,7 +67,7 @@ func (currentlDB *ComputerDao) DeleteData(data models.Table, core models.Databas
 }
 
 func (currentlDB *ComputerDao) UpdateData(data models.Table, core models.DatabaseCore) models.Response {
-	log.Debug("dao ", core, " get = ", data)
+	log.Debug("dao get = ", data)
 
 	computer, resp := currentlDB.getData(data)
 	if resp != nil {
@@ -92,7 +92,7 @@ func (currentlDB *ComputerDao) UpdateData(data models.Table, core models.Databas
 }
 
 func (currentlDB *ComputerDao) ShowData(data models.Table, core models.DatabaseCore) models.Response {
-	log.Debug("dao ", core, " get = ", data)
+	log.Debug("dao get = ", data)
 
 	computer, resp := currentlDB.getData(data)
 	if resp != nil {

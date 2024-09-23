@@ -55,5 +55,13 @@ services:
     ports:
       - "19090:9090"
 
+  grafana:
+    image: grafana/grafana-oss:9.4.3
+    ports:
+      - "13000:3000"
+    volumes: 
+      - grafana-data:/var/lib/grafana
+
 volumes:
   mongo_data:
+  grafana-data:

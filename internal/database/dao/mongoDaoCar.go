@@ -20,7 +20,7 @@ func (currentlDB *CarDao) curResponse() responses.ResponseCar {
 }
 
 func (currentlDB *CarDao) CreateData(data models.Table, core models.DatabaseCore) models.Response {
-	log.Debug("dao ", core, " get = ", data)
+	log.Debug("dao get = ", data)
 
 	curCar, resp := currentlDB.getData(data)
 	if resp != nil {
@@ -43,7 +43,7 @@ func (currentlDB *CarDao) CreateData(data models.Table, core models.DatabaseCore
 }
 
 func (currentlDB *CarDao) DeleteData(data models.Table, core models.DatabaseCore) models.Response {
-	log.Debug("dao ", core, " get = ", data)
+	log.Debug("dao get = ", data)
 
 	curCar, resp := currentlDB.getData(data)
 	if resp != nil {
@@ -67,7 +67,7 @@ func (currentlDB *CarDao) DeleteData(data models.Table, core models.DatabaseCore
 }
 
 func (currentlDB *CarDao) UpdateData(data models.Table, core models.DatabaseCore) models.Response {
-	log.Debug("dao ", core, " get = ", data)
+	log.Debug("dao get = ", data)
 
 	curCar, resp := currentlDB.getData(data)
 	if resp != nil {
@@ -92,7 +92,7 @@ func (currentlDB *CarDao) UpdateData(data models.Table, core models.DatabaseCore
 }
 
 func (currentlDB *CarDao) ShowData(data models.Table, core models.DatabaseCore) models.Response {
-	log.Debug("dao ", core, " get = ", data)
+	log.Debug("dao get = ", data)
 
 	curCar, resp := currentlDB.getData(data)
 	if resp != nil {

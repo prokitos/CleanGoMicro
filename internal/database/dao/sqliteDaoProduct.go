@@ -18,7 +18,7 @@ func (currentlDB *ProductDao) curResponse() responses.ResponseProduct {
 }
 
 func (currentlDB *ProductDao) CreateData(data models.Table, core models.DatabaseCore) models.Response {
-	log.Debug("dao ", core, " get = ", data)
+	log.Debug("dao get = ", data)
 
 	prod, resp := currentlDB.getData(data)
 	if resp != nil {
@@ -40,7 +40,7 @@ func (currentlDB *ProductDao) CreateData(data models.Table, core models.Database
 }
 
 func (currentlDB *ProductDao) DeleteData(data models.Table, core models.DatabaseCore) models.Response {
-	log.Debug("dao ", core, " get = ", data)
+	log.Debug("dao get = ", data)
 
 	prod, resp := currentlDB.getData(data)
 	if resp != nil {
@@ -63,7 +63,7 @@ func (currentlDB *ProductDao) DeleteData(data models.Table, core models.Database
 }
 
 func (currentlDB *ProductDao) UpdateData(data models.Table, core models.DatabaseCore) models.Response {
-	log.Debug("dao ", core, " get = ", data)
+	log.Debug("dao get = ", data)
 
 	prod, resp := currentlDB.getData(data)
 	if resp != nil {
@@ -85,7 +85,7 @@ func (currentlDB *ProductDao) UpdateData(data models.Table, core models.Database
 }
 
 func (currentlDB *ProductDao) ShowData(data models.Table, core models.DatabaseCore) models.Response {
-	log.Debug("dao ", core, " get = ", data)
+	log.Debug("dao get = ", data)
 
 	prod, resp := currentlDB.getData(data)
 	if resp != nil {
