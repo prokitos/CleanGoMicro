@@ -12,10 +12,9 @@ import (
 // роуты для tasks
 
 func getTask(c *fiber.Ctx) error {
-
 	start := time.Now()
 	defer func() {
-		metrics.ObserveRequest(time.Since(start), c.Response().StatusCode())
+		metrics.ObserveRequest(time.Since(start), c.Response().StatusCode(), c.Route().Method, c.Route().Path)
 	}()
 
 	var curTask tables.Task
@@ -25,6 +24,11 @@ func getTask(c *fiber.Ctx) error {
 }
 
 func insertTask(c *fiber.Ctx) error {
+	start := time.Now()
+	defer func() {
+		metrics.ObserveRequest(time.Since(start), c.Response().StatusCode(), c.Route().Method, c.Route().Path)
+	}()
+
 	var curTask tables.Task
 	curTask.GetQueryParams(c)
 	return services.TaskInsert(curTask).GetError(c)

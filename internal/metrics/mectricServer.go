@@ -12,3 +12,9 @@ func MetricListen(address string) error {
 
 	return http.ListenAndServe(address, mux)
 }
+
+// пихать в каждый роут
+// start := time.Now()
+// defer func() {
+// 	metrics.ObserveRequest(time.Since(start), c.Response().StatusCode())
+// }()

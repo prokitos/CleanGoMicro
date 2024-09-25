@@ -8,7 +8,11 @@ require (
 	github.com/BurntSushi/toml v1.2.1 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
+	github.com/gofiber/adaptor/v2 v2.1.22 // indirect
+	github.com/gofiber/fiber v1.14.6 // indirect
+	github.com/gofiber/utils v0.1.2 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
+	github.com/gorilla/schema v1.1.0 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20221227161230-091c0ba34f0a // indirect
 	github.com/jackc/pgx/v5 v5.5.5 // indirect
@@ -35,18 +39,22 @@ require (
 )
 
 require (
-	github.com/andybalholm/brotli v1.0.5 // indirect
-	github.com/google/uuid v1.5.0 // indirect
+	github.com/andybalholm/brotli v1.1.0 // indirect
+	github.com/ansrivas/fiberprometheus v0.3.2
+	github.com/ansrivas/fiberprometheus/v2 v2.7.0
+	github.com/carousell/fiber-prometheus-middleware v0.0.0-20220921093839-cac9cfe3e61f
+	github.com/google/uuid v1.6.0 // indirect
+	github.com/hepsiburada/fiber-prometheus v0.1.0
 	github.com/ilyakaznacheev/cleanenv v1.5.0
 	github.com/klauspost/compress v1.17.9 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mattn/go-runewidth v0.0.15 // indirect
 	github.com/prometheus/client_golang v1.20.4
-	github.com/rivo/uniseg v0.2.0 // indirect
+	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/sirupsen/logrus v1.9.3
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
-	github.com/valyala/fasthttp v1.51.0 // indirect
+	github.com/valyala/fasthttp v1.52.0 // indirect
 	github.com/valyala/tcplisten v1.0.0 // indirect
 	go.mongodb.org/mongo-driver v1.16.1
 	golang.org/x/sys v0.22.0 // indirect
