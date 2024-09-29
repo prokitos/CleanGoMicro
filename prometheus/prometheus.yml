@@ -1,0 +1,21 @@
+global: 
+  scrape_interval:     15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'prometheus'
+    scrape_interval:     15s
+    scrape_timeout:      15s
+    static_configs:
+      - targets: ['host.docker.internal:8082']
+
+  - job_name: 'clean_server'
+    scrape_interval:     15s
+    scrape_timeout:      15s
+    static_configs:
+      - targets: ['host.docker.internal:8082']  # доступ к прометеусу внутри докера, чтобы не ставить на свой комп
+
+  - job_name: node
+    scrape_interval: 5s
+    static_configs:
+    - targets: ['host.docker.internal:9100']

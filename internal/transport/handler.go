@@ -32,4 +32,5 @@ func SetHandlers(instance *fiber.App) {
 	instance.Get("/product", getProduct)
 	instance.Delete("/product", deleteProduct)
 	instance.Put("/product", updateProduct)
+
 }

@@ -20,7 +20,7 @@ func main() {
 	log.Debug("log is loaded")
 
 	var cfg config.MainConfig
-	cfg.ConfigMustLoad("local")
+	cfg.ConfigMustLoad("docker")
 	log.Debug("config is loaded")
 
 	var PGDB database.PostgresDatabase
@@ -31,7 +31,7 @@ func main() {
 	SQLTEDB.Run(cfg)
 	log.Debug("databases is loaded")
 
-	go metrics.MetricListen("127.0.0.1:8082")
+	go metrics.MetricListen(":8082")
 
 	var application app.App
 	go application.NewServer(cfg.Server.Port)
