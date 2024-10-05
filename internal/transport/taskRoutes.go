@@ -1,7 +1,6 @@
 package transport
 
 import (
-	"modules/internal/metrics"
 	"modules/internal/models/tables"
 	"modules/internal/services"
 	"time"
@@ -12,10 +11,6 @@ import (
 // роуты для tasks
 
 func getTask(c *fiber.Ctx) error {
-	start := time.Now()
-	defer func() {
-		metrics.ObserveRequest(time.Since(start), c.Response().StatusCode(), c.Route().Method, c.Route().Path)
-	}()
 
 	var curTask tables.Task
 	curTask.GetQueryParams(c)
@@ -24,10 +19,8 @@ func getTask(c *fiber.Ctx) error {
 }
 
 func insertTask(c *fiber.Ctx) error {
-	start := time.Now()
-	defer func() {
-		metrics.ObserveRequest(time.Since(start), c.Response().StatusCode(), c.Route().Method, c.Route().Path)
-	}()
+
+	time.Sleep(time.Second * 1)
 
 	var curTask tables.Task
 	curTask.GetQueryParams(c)

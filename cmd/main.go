@@ -4,7 +4,6 @@ import (
 	"modules/internal/app"
 	"modules/internal/config"
 	"modules/internal/database"
-	"modules/internal/metrics"
 	"os"
 	"os/signal"
 	"syscall"
@@ -20,7 +19,7 @@ func main() {
 	log.Debug("log is loaded")
 
 	var cfg config.MainConfig
-	cfg.ConfigMustLoad("docker")
+	cfg.ConfigMustLoad("local")
 	log.Debug("config is loaded")
 
 	var PGDB database.PostgresDatabase
@@ -31,7 +30,7 @@ func main() {
 	SQLTEDB.Run(cfg)
 	log.Debug("databases is loaded")
 
-	go metrics.MetricListen(":8082")
+	//go metrics.MetricListen(":8082")
 
 	var application app.App
 	go application.NewServer(cfg.Server.Port)

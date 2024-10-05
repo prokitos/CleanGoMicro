@@ -1,17 +1,11 @@
 package metrics
 
-import (
-	"net/http"
+// func MetricListen(address string) error {
+// 	mux := http.NewServeMux()
+// 	mux.Handle("/metrics", promhttp.Handler())
 
-	"github.com/prometheus/client_golang/prometheus/promhttp"
-)
-
-func MetricListen(address string) error {
-	mux := http.NewServeMux()
-	mux.Handle("/metrics", promhttp.Handler())
-
-	return http.ListenAndServe(address, mux)
-}
+// 	return http.ListenAndServe(address, mux)
+// }
 
 // пихать в каждый роут
 // start := time.Now()

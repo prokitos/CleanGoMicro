@@ -4,33 +4,34 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/gofiber/fiber/v2"
 	"github.com/prometheus/client_golang/prometheus"
-	"github.com/prometheus/client_golang/prometheus/promauto"
 )
 
-var requestMetric = promauto.NewSummaryVec(prometheus.SummaryOpts{
-	Namespace:  "clean",
-	Subsystem:  "http",
-	Name:       "request",
-	Objectives: map[float64]float64{0.5: 0.05, 0.9: 0.01, 0.99: 0.001}, // чтобы правильно видеть запросы, например если есть проблемы с редкими долгими запросами
-}, []string{"status"})
+var RequestDuration *prometheus.SummaryVec = prometheus.NewSummaryVec(
+	prometheus.SummaryOpts{
+		Name:       "http_request_duration_seconds",
+		Help:       "Duration of HTTP requests in seconds",
+		Objectives: map[float64]float64{0.5: 0.05, 0.9: 0.01, 0.99: 0.001},
+	},
+	[]string{"method", "path"},
+)
+var RequestStatus *prometheus.SummaryVec = prometheus.NewSummaryVec(
+	prometheus.SummaryOpts{
+		Name:       "http_status_total",
+		Help:       "Total number of HTTP requests and status",
+		Objectives: map[float64]float64{0.5: 0.05, 0.9: 0.01, 0.99: 0.001},
+	},
+	[]string{"status"},
+)
 
-var methodMetric = promauto.NewSummaryVec(prometheus.SummaryOpts{
-	Namespace:  "clean",
-	Subsystem:  "http",
-	Name:       "methods",
-	Objectives: map[float64]float64{0.5: 0.05, 0.9: 0.01, 0.99: 0.001}, // чтобы правильно видеть запросы, например если есть проблемы с редкими долгими запросами
-}, []string{"method"})
+func Observer(c *fiber.Ctx) error {
+	start := time.Now()
+	//c.Next()
+	duration := time.Since(start).Seconds()
 
-var routeMetric = promauto.NewSummaryVec(prometheus.SummaryOpts{
-	Namespace:  "clean",
-	Subsystem:  "http",
-	Name:       "routes",
-	Objectives: map[float64]float64{0.5: 0.05, 0.9: 0.01, 0.99: 0.001}, // чтобы правильно видеть запросы, например если есть проблемы с редкими долгими запросами
-}, []string{"route"})
+	RequestStatus.WithLabelValues(strconv.Itoa(c.Response().StatusCode())).Observe(1)
+	RequestDuration.WithLabelValues(c.Method(), c.Path()).Observe(duration)
 
-func ObserveRequest(durat time.Duration, status int, method string, name string) {
-	requestMetric.WithLabelValues(strconv.Itoa(status)).Observe(durat.Seconds())
-	methodMetric.WithLabelValues(method).Observe(1)
-	routeMetric.WithLabelValues(name).Observe(1)
+	return c.Next()
 }

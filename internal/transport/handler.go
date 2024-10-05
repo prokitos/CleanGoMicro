@@ -1,12 +1,26 @@
 package transport
 
 import (
+	"modules/internal/metrics"
+	"net/http"
+
 	"github.com/gofiber/fiber/v2"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 // здесь хранятся хэндлеры.
 
 func SetHandlers(instance *fiber.App) {
+
+	reg := prometheus.NewRegistry()
+	reg.MustRegister(metrics.RequestDuration)
+	reg.MustRegister(metrics.RequestStatus)
+	instance.Use(metrics.Observer)
+
+	mux := http.NewServeMux()
+	mux.Handle("/metrics", promhttp.HandlerFor(reg, promhttp.HandlerOpts{}))
+	go http.ListenAndServe(":8082", mux)
 
 	instance.Get("/user", getUser)
 	instance.Post("/user", insertUser)
